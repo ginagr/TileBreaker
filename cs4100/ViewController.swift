@@ -41,18 +41,20 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        var ind = 0
-        for view in self.view.subviews as [UIView] { //randomly color all the tiles
-            if let btn = view as? UIButton {
-                if btn.accessibilityHint != "pattern" {
-                    let myColor: UIColor = colorArray[generateRandomColor(level)]
-                    btn.backgroundColor = myColor
-                    allButtons.append(btn)
-                    btn.setTitle("Num \(ind)", for: .normal)
-                    ind = ind + 1
-                }
-            }
+        
+        //get screen sizes
+        let screenSize = UIScreen.main.bounds
+        let screenWidth = screenSize.width
+        let screenHeight = screenSize.height
+        let height = (screenHeight/20)
+        for index in 0...20 {
+            let y = height * CGFloat(index)
+            let button = UIButton(frame: CGRect(x: 20, y: y, width: 200, height: height - 5))
+            button.backgroundColor = colorArray[generateRandomColor(level)]
+            button.addTarget(self, action: #selector(clickButton), for: .touchUpInside)
+            button.setTitle("Num \(index)", for: .normal)
+            allButtons.append(button)
+            self.view.addSubview(button)
         }
         
         var patternButtons = [UIButton] () //append all pattern buttons to array
@@ -81,7 +83,7 @@ class ViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    @IBAction func clickButton(_ sender: UIButton, forEvent event: UIEvent) {
+    @IBAction func clickButton(sender: UIButton!) {
         if isHighLighted == false { //first button already clicked
             sender.layer.shadowOpacity = 0.5 //add shadow
             isHighLighted = true;
@@ -182,10 +184,31 @@ class ViewController: UIViewController {
     }
     
     func patternFound(index: Int) {
+        print("INDEX: \(index)")
         if level == 1 {
             allButtons[index].backgroundColor = UIColor.black
             allButtons[index+1].backgroundColor = UIColor.black
             allButtons[index+2].backgroundColor = UIColor.black
+            
+            let width = allButtons[index].frame.size.width
+            let height = allButtons[index].frame.size.height
+            let x = allButtons[index].frame.origin.x
+            
+            UIView.animate(withDuration: 1.0, animations:{
+                self.allButtons[index].frame = CGRect(x: x + 100, y: self.allButtons[index].frame.origin.y, width: width, height: height)
+                self.allButtons[index+1].frame = CGRect(x: x + 100, y: self.allButtons[index+1].frame.origin.y, width: width, height: height)
+                self.allButtons[index+2].frame = CGRect(x: x + 100, y: self.allButtons[index+2].frame.origin.y, width: width, height: height)
+            })
+            
+//            for i in (-1...(index+2)).reversed() {
+//
+//                UIView.animate(withDuration: 1.0, animations:{
+//                    let button = self.allButtons[index]
+//                    button.frame = CGRect(x: button.frame.origin.x + 25, y: button.frame.origin.y + 25, width: button.frame.size.width, height: button.frame.size.height)
+//                })
+            
+//            }
+            
             
 //            if index > 2 { //make sure in bounds
 //                allButtons[index].backgroundColor = allButtons[index-3].backgroundColor
