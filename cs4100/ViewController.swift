@@ -28,6 +28,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var pattern3: UIButton!
     @IBOutlet weak var pattern4: UIButton!
     @IBOutlet weak var pattern5: UIButton!
+    @IBOutlet weak var label: UILabel!
     
     var level = 1
     
@@ -39,20 +40,27 @@ class ViewController: UIViewController {
     
     var allButtons = [UIButton] ()
     
+    //get screen sizes
+    let screenSize = UIScreen.main.bounds
+    var screenWidth: CGFloat!
+    var screenHeight: CGFloat!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        label.layer.borderColor = UIColor.gray.cgColor
+        label.layer.borderWidth = 3.0;
         
-        //get screen sizes
-        let screenSize = UIScreen.main.bounds
-        let screenWidth = screenSize.width
-        let screenHeight = screenSize.height
+        screenWidth = screenSize.width
+        screenHeight = screenSize.height
+        
         let height = (screenHeight/20)
         for index in 0...20 {
             let y = height * CGFloat(index)
-            let button = UIButton(frame: CGRect(x: 20, y: y, width: 200, height: height - 5))
+            let button = UIButton(frame: CGRect(x: 20, y: y, width: 150, height: height - 5))
             button.backgroundColor = colorArray[generateRandomColor(level)]
             button.addTarget(self, action: #selector(clickButton), for: .touchUpInside)
-            button.setTitle("Num \(index)", for: .normal)
+//            button.setTitle("Num \(index)", for: .normal)
             allButtons.append(button)
             self.view.addSubview(button)
         }
@@ -85,7 +93,7 @@ class ViewController: UIViewController {
     
     @IBAction func clickButton(sender: UIButton!) {
         if isHighLighted == false { //first button already clicked
-            sender.layer.shadowOpacity = 0.5 //add shadow
+            sender.layer.shadowOpacity = 1.0 //add shadow
             isHighLighted = true;
             
             firstColor = sender.backgroundColor; //save color
@@ -141,9 +149,9 @@ class ViewController: UIViewController {
     func checkPattern() {
         var first = false;
         var second = false
-        var third = false
-        var fourth = false
-        var fifth = false
+//        var third = false
+//        var fourth = false
+//        var fifth = false
         
         var firstIndex = 0;
         
@@ -177,9 +185,11 @@ class ViewController: UIViewController {
                 }
             }
         case 2:
-            print("The last letter of the alphabet")
+            print("LEVEL 2")
+            break;
         default:
-            print("Some other character")
+            print("LEVEL 3+")
+            break;
         }
     }
     
@@ -195,10 +205,28 @@ class ViewController: UIViewController {
             let x = allButtons[index].frame.origin.x
             
             UIView.animate(withDuration: 1.0, animations:{
-                self.allButtons[index].frame = CGRect(x: x + 100, y: self.allButtons[index].frame.origin.y, width: width, height: height)
-                self.allButtons[index+1].frame = CGRect(x: x + 100, y: self.allButtons[index+1].frame.origin.y, width: width, height: height)
-                self.allButtons[index+2].frame = CGRect(x: x + 100, y: self.allButtons[index+2].frame.origin.y, width: width, height: height)
+                self.allButtons[index].frame = CGRect(x: x + self.screenWidth, y: self.allButtons[index].frame.origin.y, width: width, height: height)
+                self.allButtons[index+1].frame = CGRect(x: x + self.screenWidth, y: self.allButtons[index+1].frame.origin.y, width: width, height: height)
+                self.allButtons[index+2].frame = CGRect(x: x + self.screenWidth, y: self.allButtons[index+2].frame.origin.y, width: width, height: height)
+                
+                let when = DispatchTime.now() + 1
+                DispatchQueue.main.asyncAfter(deadline: when) {
+                    self.allButtons[index].removeFromSuperview()
+                    self.allButtons[index+1].removeFromSuperview()
+                    self.allButtons[index+2].removeFromSuperview()
+                    
+                    self.updateButtons()
+                }
             })
+
+            if index+2 < allButtons.count {
+                UIView.animate(withDuration: 1.0, animations:{
+                    let diff = 3 * (self.screenHeight/20)
+                    for i in (index+3)...(self.allButtons.count-1) {
+                        self.allButtons[i].frame = CGRect(x: x, y: self.allButtons[i].frame.origin.y - diff, width: width, height: height)
+                    }
+                })
+            }
             
 //            for i in (-1...(index+2)).reversed() {
 //
@@ -215,6 +243,21 @@ class ViewController: UIViewController {
 //                allButtons[index+1].backgroundColor = allButtons[index-2].backgroundColor
 //                allButtons[index+2].backgroundColor = allButtons[index-1].backgroundColor
 //            }
+        }
+    }
+    
+    func updateButtons() {
+
+        allButtons.removeAll()
+        var count = 0
+        for view in self.view.subviews as [UIView] {
+            if let btn = view as? UIButton {
+                if btn.titleLabel?.text != "pattern" {
+                    allButtons.append(btn)
+//                    btn.setTitle("Number \(count)", for: .normal)
+                    count = count + 1
+                }
+            }
         }
     }
 }
