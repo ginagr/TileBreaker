@@ -47,7 +47,7 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         label.layer.borderColor = UIColor.gray.cgColor
         label.layer.borderWidth = 3.0;
         
@@ -60,7 +60,7 @@ class ViewController: UIViewController {
             let button = UIButton(frame: CGRect(x: 20, y: y, width: 150, height: height - 5))
             button.backgroundColor = colorArray[generateRandomColor(level)]
             button.addTarget(self, action: #selector(clickButton), for: .touchUpInside)
-//            button.setTitle("Num \(index)", for: .normal)
+            //            button.setTitle("Num \(index)", for: .normal)
             allButtons.append(button)
             self.view.addSubview(button)
         }
@@ -147,48 +147,46 @@ class ViewController: UIViewController {
     }
     
     func checkPattern() {
-        var first = false;
-        var second = false
-//        var third = false
-//        var fourth = false
-//        var fifth = false
-        
-        var firstIndex = 0;
         
         switch level {
         case 1:
-            for (index, btn) in allButtons.enumerated() {
-                if !first {
-                    if btn.backgroundColor == pattern1.backgroundColor { //first color is right
-                        first = true
-                        second = false
-                        firstIndex = index
-                    }
-                } else if !second { //checking second
-                    if btn.backgroundColor == pattern2.backgroundColor { //second color is right
-                        second = true
-                    } else if btn.backgroundColor == pattern1.backgroundColor { //second color is wrong
-                        first = true
-                        firstIndex = index
-                    } else {
-                        first = false
-                    }
-                } else { //already found second
-                    if btn.backgroundColor == pattern3.backgroundColor { //found pattern, delete
-                        patternFound(index: firstIndex)
-                        first = false
-                        second = false
-                    } else { //not pattern, reset
-                        first = false
-                        second = false
+            for index in 0...(allButtons.count-2) {
+                if allButtons[index].backgroundColor == pattern1.backgroundColor {
+                    if allButtons[index+1].backgroundColor == pattern2.backgroundColor {
+                        if allButtons[index+2].backgroundColor == pattern3.backgroundColor {
+                            patternFound(index: index)
+                        }
                     }
                 }
             }
+            break;
         case 2:
-            print("LEVEL 2")
+            for index in 0...(allButtons.count-3) {
+                if allButtons[index].backgroundColor == pattern1.backgroundColor {
+                    if allButtons[index+1].backgroundColor == pattern2.backgroundColor {
+                        if allButtons[index+2].backgroundColor == pattern3.backgroundColor {
+                            if allButtons[index+3].backgroundColor == pattern4.backgroundColor {
+                                patternFound(index: index)
+                            }
+                        }
+                    }
+                }
+            }
             break;
         default:
-            print("LEVEL 3+")
+            for index in 0...(allButtons.count-4) {
+                if allButtons[index].backgroundColor == pattern1.backgroundColor {
+                    if allButtons[index+1].backgroundColor == pattern2.backgroundColor {
+                        if allButtons[index+2].backgroundColor == pattern3.backgroundColor {
+                            if allButtons[index+3].backgroundColor == pattern4.backgroundColor {
+                                if allButtons[index+4].backgroundColor == pattern5.backgroundColor {
+                                    patternFound(index: index)
+                                }
+                            }
+                        }
+                    }
+                }
+            }
             break;
         }
     }
@@ -218,7 +216,7 @@ class ViewController: UIViewController {
                     self.updateButtons()
                 }
             })
-
+            
             if index+2 < allButtons.count {
                 UIView.animate(withDuration: 1.0, animations:{
                     let diff = 3 * (self.screenHeight/20)
@@ -228,33 +226,33 @@ class ViewController: UIViewController {
                 })
             }
             
-//            for i in (-1...(index+2)).reversed() {
-//
-//                UIView.animate(withDuration: 1.0, animations:{
-//                    let button = self.allButtons[index]
-//                    button.frame = CGRect(x: button.frame.origin.x + 25, y: button.frame.origin.y + 25, width: button.frame.size.width, height: button.frame.size.height)
-//                })
+            //            for i in (-1...(index+2)).reversed() {
+            //
+            //                UIView.animate(withDuration: 1.0, animations:{
+            //                    let button = self.allButtons[index]
+            //                    button.frame = CGRect(x: button.frame.origin.x + 25, y: button.frame.origin.y + 25, width: button.frame.size.width, height: button.frame.size.height)
+            //                })
             
-//            }
+            //            }
             
             
-//            if index > 2 { //make sure in bounds
-//                allButtons[index].backgroundColor = allButtons[index-3].backgroundColor
-//                allButtons[index+1].backgroundColor = allButtons[index-2].backgroundColor
-//                allButtons[index+2].backgroundColor = allButtons[index-1].backgroundColor
-//            }
+            //            if index > 2 { //make sure in bounds
+            //                allButtons[index].backgroundColor = allButtons[index-3].backgroundColor
+            //                allButtons[index+1].backgroundColor = allButtons[index-2].backgroundColor
+            //                allButtons[index+2].backgroundColor = allButtons[index-1].backgroundColor
+            //            }
         }
     }
     
     func updateButtons() {
-
+        
         allButtons.removeAll()
         var count = 0
         for view in self.view.subviews as [UIView] {
             if let btn = view as? UIButton {
                 if btn.titleLabel?.text != "pattern" {
                     allButtons.append(btn)
-//                    btn.setTitle("Number \(count)", for: .normal)
+                    //                    btn.setTitle("Number \(count)", for: .normal)
                     count = count + 1
                 }
             }
