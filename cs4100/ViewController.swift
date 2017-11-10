@@ -40,10 +40,14 @@ class ViewController: UIViewController {
     
     var allButtons = [UIButton] ()
     
+    var patternFound:Bool = false
+    
     //get screen sizes
     let screenSize = UIScreen.main.bounds
     var screenWidth: CGFloat!
     var screenHeight: CGFloat!
+    
+    var gameTimer: Timer!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,17 +58,8 @@ class ViewController: UIViewController {
         screenWidth = screenSize.width
         screenHeight = screenSize.height
         
-        let height = (screenHeight/20)
-        for index in 0...20 {
-            let y = height * CGFloat(index)
-            let button = UIButton(frame: CGRect(x: 20, y: y, width: 150, height: height - 5))
-            button.backgroundColor = colorArray[generateRandomColor(level)]
-            button.addTarget(self, action: #selector(clickButton), for: .touchUpInside)
-            //            button.setTitle("Num \(index)", for: .normal)
-            allButtons.append(button)
-            self.view.addSubview(button)
-        }
-        
+        gameTimer = Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(addBlock), userInfo: nil, repeats: true)
+
         var patternButtons = [UIButton] () //append all pattern buttons to array
         patternButtons.append(pattern1)
         patternButtons.append(pattern2)
@@ -89,6 +84,55 @@ class ViewController: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    @objc func addBlock() {
+        
+//        if patternFound {
+//            let when = DispatchTime.now() + 1
+//            DispatchQueue.main.asyncAfter(deadline: when) {
+//                let height = (self.screenHeight/20)
+//                //        for index in 0...20 {
+//                //            let y = height * CGFloat(index)
+//                let button = UIButton(frame: CGRect(x: 20, y: 0, width: 150, height: height - 5))
+//                button.backgroundColor = self.colorArray[self.generateRandomColor(self.level)]
+//                button.addTarget(self, action: #selector(self.clickButton), for: .touchUpInside)
+//                //            button.setTitle("Num \(index)", for: .normal)
+//                self.allButtons.append(button)
+//                self.view.addSubview(button)
+//
+//                self.moveButtonsDown()
+//            }
+//            //wait till pattern is removed
+//        } else {
+            let height = (screenHeight/20)
+            //        for index in 0...20 {
+            //            let y = height * CGFloat(index)
+            let button = UIButton(frame: CGRect(x: 20, y: 0, width: 150, height: height - 5))
+            button.backgroundColor = colorArray[generateRandomColor(level)]
+            button.addTarget(self, action: #selector(clickButton), for: .touchUpInside)
+            //            button.setTitle("Num \(index)", for: .normal)
+            allButtons.append(button)
+            self.view.addSubview(button)
+            
+            moveButtonsDown()
+//        }
+    }
+    
+    func moveButtonsDown() {
+        updateButtons()
+        let x = allButtons[0].frame.origin.x
+        let height = (screenHeight/20)
+        let width = allButtons[0].frame.size.width
+        for index in 0...allButtons.count-1 {
+            let y = height * CGFloat(index)
+            UIView.animate(withDuration: 0.1, animations:{
+                self.allButtons[index].frame = CGRect(x: x, y: y, width: width, height: height - 5)
+            })
+        }
+        if allButtons.count > 2 {
+            checkPattern()
+        }
     }
     
     @IBAction func clickButton(sender: UIButton!) {
@@ -150,7 +194,7 @@ class ViewController: UIViewController {
         
         switch level {
         case 1:
-            for index in 0...(allButtons.count-2) {
+            for index in 0...(allButtons.count-3) {
                 if allButtons[index].backgroundColor == pattern1.backgroundColor {
                     if allButtons[index+1].backgroundColor == pattern2.backgroundColor {
                         if allButtons[index+2].backgroundColor == pattern3.backgroundColor {
@@ -161,7 +205,7 @@ class ViewController: UIViewController {
             }
             break;
         case 2:
-            for index in 0...(allButtons.count-3) {
+            for index in 0...(allButtons.count-4) {
                 if allButtons[index].backgroundColor == pattern1.backgroundColor {
                     if allButtons[index+1].backgroundColor == pattern2.backgroundColor {
                         if allButtons[index+2].backgroundColor == pattern3.backgroundColor {
@@ -174,7 +218,7 @@ class ViewController: UIViewController {
             }
             break;
         default:
-            for index in 0...(allButtons.count-4) {
+            for index in 0...(allButtons.count-5) {
                 if allButtons[index].backgroundColor == pattern1.backgroundColor {
                     if allButtons[index+1].backgroundColor == pattern2.backgroundColor {
                         if allButtons[index+2].backgroundColor == pattern3.backgroundColor {
@@ -193,6 +237,8 @@ class ViewController: UIViewController {
     
     func patternFound(index: Int) {
         print("INDEX: \(index)")
+        gameTimer.invalidate()
+        patternFound = true
         if level == 1 {
             allButtons[index].backgroundColor = UIColor.black
             allButtons[index+1].backgroundColor = UIColor.black
@@ -214,17 +260,21 @@ class ViewController: UIViewController {
                     self.allButtons[index+2].removeFromSuperview()
                     
                     self.updateButtons()
+                    self.moveButtonsUp(i: index)
+                    self.patternFound = false
+                    
+                    self.gameTimer = Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(self.addBlock), userInfo: nil, repeats: true)
                 }
             })
             
-            if index+2 < allButtons.count {
-                UIView.animate(withDuration: 1.0, animations:{
-                    let diff = 3 * (self.screenHeight/20)
-                    for i in (index+3)...(self.allButtons.count-1) {
-                        self.allButtons[i].frame = CGRect(x: x, y: self.allButtons[i].frame.origin.y - diff, width: width, height: height)
-                    }
-                })
-            }
+            //            if index+2 < allButtons.count {
+            //                UIView.animate(withDuration: 1.0, animations:{
+            //                    let diff = 3 * (self.screenHeight/20)
+            //                    for i in (index+3)...(self.allButtons.count-1) {
+            //                        self.allButtons[i].frame = CGRect(x: x, y: self.allButtons[i].frame.origin.y - diff, width: width, height: height)
+            //                    }
+            //                })
+            //            }
             
             //            for i in (-1...(index+2)).reversed() {
             //
@@ -242,6 +292,18 @@ class ViewController: UIViewController {
             //                allButtons[index+2].backgroundColor = allButtons[index-1].backgroundColor
             //            }
         }
+    }
+    
+    func moveButtonsUp(i: Int) {
+        updateButtons()
+            UIView.animate(withDuration: 0.5, animations:{
+                let diff = 3 * (self.screenHeight/20)
+                if i < self.allButtons.count-1 {
+                    for index in i...(self.allButtons.count-1) {
+                        self.allButtons[index].frame = CGRect(x: self.allButtons[i].frame.origin.x, y: self.allButtons[i].frame.origin.y - diff, width: self.allButtons[i].frame.size.width, height: self.allButtons[i].frame.size.height)
+                    }
+                }
+            })
     }
     
     func updateButtons() {
