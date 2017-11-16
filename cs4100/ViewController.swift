@@ -20,6 +20,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var gameOverButton: UIButton!
     @IBOutlet weak var gameOverText: UITextField!
     @IBOutlet weak var scoreText: UILabel!
+    @IBOutlet weak var highScoreText: UILabel!
     
     var level = 1
     
@@ -30,6 +31,7 @@ class ViewController: UIViewController {
     var colorArray=[UIColor.red, UIColor.blue, UIColor.green, UIColor.yellow, UIColor.orange]
     
     var allButtons = [UIButton] ()
+    var patternButtons = [UIButton] ()
     
     var patternFound:Bool = false
     
@@ -53,15 +55,20 @@ class ViewController: UIViewController {
         gameOverLabel.layer.borderWidth = 3.0;
         
         //TODO: change back to 2
-        gameTimer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(addBlock), userInfo: nil, repeats: true)
+        gameTimer = Timer.scheduledTimer(timeInterval: 2.0, target: self, selector: #selector(addBlock), userInfo: nil, repeats: true)
         
-        var patternButtons = [UIButton] () //append all pattern buttons to array
+        //append all pattern buttons to array
         patternButtons.append(pattern1)
         patternButtons.append(pattern2)
         patternButtons.append(pattern3)
         patternButtons.append(pattern4)
         patternButtons.append(pattern5)
         
+        updatePattern()
+        
+    }
+    
+    func updatePattern() {
         for button in patternButtons { //hide pattern buttons
             button.isHidden = true
         }
@@ -73,7 +80,6 @@ class ViewController: UIViewController {
             patternButtons[index].backgroundColor = element
             patternButtons[index].isHidden = false
         }
-        
     }
     
     override func didReceiveMemoryWarning() {
@@ -245,7 +251,7 @@ class ViewController: UIViewController {
                     self.patternFound = false
                     
                     //TODO: change back to 2
-                    self.gameTimer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(self.addBlock), userInfo: nil, repeats: true)
+                    self.gameTimer = Timer.scheduledTimer(timeInterval: 2.0, target: self, selector: #selector(self.addBlock), userInfo: nil, repeats: true)
                 }
             })
             
@@ -311,6 +317,10 @@ class ViewController: UIViewController {
         gameOverLabel.isHidden = false
         gameOverButton.isHidden = false
         gameOverText.isHidden = false
+        
+        if Int(highScoreText.text!)! < Int(scoreText.text!)! {
+            highScoreText.text = scoreText.text
+        }
     }
     
     @IBAction func restartGame(_ sender: UIButton) {
@@ -326,8 +336,10 @@ class ViewController: UIViewController {
         
         allButtons.removeAll()
         
+        updatePattern()
+        
         //TODO: change back to 2
-        gameTimer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(self.addBlock), userInfo: nil, repeats: true)
+        gameTimer = Timer.scheduledTimer(timeInterval: 2.0, target: self, selector: #selector(self.addBlock), userInfo: nil, repeats: true)
     }
 }
 

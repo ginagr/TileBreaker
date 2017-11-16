@@ -115,14 +115,26 @@
                                     <action selector="restartGame:" destination="BYZ-38-t0r" eventType="touchUpInside" id="nLu-vs-thD"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Score: " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="npC-bB-8RA">
-                                <rect key="frame" x="286" y="24" width="63.5" height="24"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Highscore: " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="npC-bB-8RA">
+                                <rect key="frame" x="244.5" y="24" width="105" height="24"/>
                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WGb-Df-ktb">
                                 <rect key="frame" x="351" y="24" width="12.5" height="24"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Score: " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y8Y-2P-MAW">
+                                <rect key="frame" x="286.5" y="51" width="63.5" height="24"/>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LYQ-fz-VhW">
+                                <rect key="frame" x="350.5" y="51" width="12.5" height="24"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -134,12 +146,16 @@
                             <constraint firstItem="Nzw-3s-VYC" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="topMargin" constant="156" id="534-at-OkW"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="WGb-Df-ktb" secondAttribute="trailing" constant="11.5" id="E0g-M7-UhG"/>
                             <constraint firstAttribute="trailingMargin" secondItem="Nzw-3s-VYC" secondAttribute="trailing" constant="44" id="KW1-bK-t1S"/>
+                            <constraint firstItem="Y8Y-2P-MAW" firstAttribute="top" secondItem="npC-bB-8RA" secondAttribute="bottom" constant="3" id="LqR-Cw-p1e"/>
+                            <constraint firstItem="LYQ-fz-VhW" firstAttribute="top" secondItem="WGb-Df-ktb" secondAttribute="bottom" constant="3" id="MFg-Uh-ySb"/>
                             <constraint firstItem="4Hg-uJ-02I" firstAttribute="centerX" secondItem="Nzw-3s-VYC" secondAttribute="centerX" id="OD0-Bi-pwF"/>
                             <constraint firstItem="WGb-Df-ktb" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="4" id="UJf-7c-gYF"/>
                             <constraint firstItem="Sdp-X1-KGm" firstAttribute="top" secondItem="Nzw-3s-VYC" secondAttribute="bottom" constant="30" id="UOF-lf-YaH"/>
                             <constraint firstItem="4Hg-uJ-02I" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="41" id="V0o-Eq-6gJ"/>
                             <constraint firstItem="Nzw-3s-VYC" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="44" id="WNr-NR-gNT"/>
                             <constraint firstItem="npC-bB-8RA" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="4" id="Wce-E9-sXa"/>
+                            <constraint firstItem="LYQ-fz-VhW" firstAttribute="leading" secondItem="Y8Y-2P-MAW" secondAttribute="trailing" constant="0.5" id="a5c-6z-Kd9"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="LYQ-fz-VhW" secondAttribute="trailing" constant="12" id="j3D-mJ-lUc"/>
                             <constraint firstItem="Sdp-X1-KGm" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="86" id="phE-JE-yYf"/>
                             <constraint firstAttribute="trailingMargin" secondItem="Sdp-X1-KGm" secondAttribute="trailing" constant="86" id="rse-f7-oz3"/>
                             <constraint firstItem="Sdp-X1-KGm" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="topMargin" constant="216" id="xkw-9i-a0f"/>
@@ -151,13 +167,14 @@
                         <outlet property="gameOverButton" destination="Sdp-X1-KGm" id="PPf-2c-n10"/>
                         <outlet property="gameOverLabel" destination="4Hg-uJ-02I" id="40g-Of-Ycq"/>
                         <outlet property="gameOverText" destination="Nzw-3s-VYC" id="L22-bS-cfa"/>
+                        <outlet property="highScoreText" destination="WGb-Df-ktb" id="hjP-Dj-5Wu"/>
                         <outlet property="label" destination="1pV-jk-DAU" id="P0w-rB-182"/>
                         <outlet property="pattern1" destination="Wu0-RA-mYw" id="x5N-7Q-CHC"/>
                         <outlet property="pattern2" destination="uYW-Rx-zr6" id="SbW-C0-lrW"/>
                         <outlet property="pattern3" destination="ZYc-JG-tmA" id="fDp-Rk-Ugq"/>
                         <outlet property="pattern4" destination="RTC-We-Fdg" id="HrM-Bj-Nhs"/>
                         <outlet property="pattern5" destination="x6E-pS-uJc" id="wjX-nM-Vrj"/>
-                        <outlet property="scoreText" destination="WGb-Df-ktb" id="UFA-WU-09v"/>
+                        <outlet property="scoreText" destination="LYQ-fz-VhW" id="c3h-5z-Y2g"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
