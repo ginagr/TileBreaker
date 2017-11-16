@@ -19,6 +19,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var gameOverLabel: UILabel!
     @IBOutlet weak var gameOverButton: UIButton!
     @IBOutlet weak var gameOverText: UITextField!
+    @IBOutlet weak var gameOverMessage: UILabel!
     @IBOutlet weak var scoreText: UILabel!
     @IBOutlet weak var highScoreText: UILabel!
     
@@ -28,7 +29,7 @@ class ViewController: UIViewController {
     var firstColor: UIColor!
     var firstButton: UIButton!
     
-    var colorArray=[UIColor.red, UIColor.blue, UIColor.green, UIColor.yellow, UIColor.orange]
+    var colorArray = [UIColor(red:0.76, green:0.71, blue:0.93, alpha:1.0), UIColor(red:0.08, green:0.35, blue:0.40, alpha:1.0), UIColor(red:0.60, green:0.15, blue:0.35, alpha:1.0), UIColor.yellow, UIColor.orange]
     
     var allButtons = [UIButton] ()
     var patternButtons = [UIButton] ()
@@ -60,16 +61,15 @@ class ViewController: UIViewController {
         gameOverLabel.layer.borderColor = UIColor.black.cgColor
         gameOverLabel.layer.borderWidth = 3.0;
         
-        //TODO: change back to 2
         gameTimer = Timer.scheduledTimer(timeInterval: 1.5, target: self, selector: #selector(addBlock), userInfo: nil, repeats: true)
         
         //append all pattern buttons to array
         patternButtons.append(pattern1)
         patternButtons.append(pattern2)
         patternButtons.append(pattern3)
-        patternButtons.append(pattern4)
-        patternButtons.append(pattern5)
-        
+//        patternButtons.append(pattern4)
+//        patternButtons.append(pattern5)
+//        
         updatePattern()
         
     }
@@ -95,7 +95,9 @@ class ViewController: UIViewController {
     
     @objc func addBlock() {
         let height = (screenHeight/20)
-        let button = UIButton(frame: CGRect(x: 20, y: 0, width: 150, height: height - 5))
+        let width = (screenWidth/2) - (screenWidth * 0.05)
+        let x = (screenWidth * 0.05)
+        let button = UIButton(frame: CGRect(x: x, y: 0, width: width, height: height - 5))
         button.backgroundColor = colorArray[generateRandomColor(level)]
         button.addTarget(self, action: #selector(clickButton), for: .touchUpInside)
         
@@ -151,8 +153,7 @@ class ViewController: UIViewController {
             return Int(arc4random_uniform(UInt32(5)))
         }
     }
-    
-    //TODO: make sure there is at least of one color
+
     func generateRandomPattern(_ level:Int) -> [UIColor] {
         if level == 1 { //three colors, pattern of three
             let pattern = [colorArray[0], colorArray[1], colorArray[2]]
@@ -224,7 +225,7 @@ class ViewController: UIViewController {
     }
     
     func patternFound(index: Int) {
-        print("INDEX: \(index)")
+//        print("INDEX: \(index)")
         let newScore = Int(scoreText.text!)! + 1
         scoreText.text = String(newScore)
         gameTimer.invalidate()
@@ -255,8 +256,7 @@ class ViewController: UIViewController {
                     
                     self.moveButtonsUp(i: index)
                     self.patternFound = false
-                    
-                    //TODO: change back to 2
+
                     self.gameTimer = Timer.scheduledTimer(timeInterval: 1.5, target: self, selector: #selector(self.addBlock), userInfo: nil, repeats: true)
                 }
             })
@@ -320,6 +320,7 @@ class ViewController: UIViewController {
         view.bringSubview(toFront: gameOverLabel)
         view.bringSubview(toFront: gameOverButton)
         view.bringSubview(toFront: gameOverText)
+        view.bringSubview(toFront: gameOverMessage)
         gameOverLabel.isHidden = false
         gameOverButton.isHidden = false
         gameOverText.isHidden = false
@@ -327,25 +328,26 @@ class ViewController: UIViewController {
         if Int(highScoreText.text!)! < Int(scoreText.text!)! {
             highScoreText.text = scoreText.text
             userDefults.set(highScoreText.text, forKey: "highScore")
+            gameOverMessage.isHidden = false
         }
     }
     
     @IBAction func restartGame(_ sender: UIButton) {
-        print("restarting game")
+//        print("restarting game")
         for (_, element) in allButtons.enumerated() {
             element.removeFromSuperview()
         }
         gameOverLabel.isHidden = true
         gameOverButton.isHidden = true
         gameOverText.isHidden = true
+        gameOverMessage.isHidden = true
         
         scoreText.text = "0"
         
         allButtons.removeAll()
         
         updatePattern()
-        
-        //TODO: change back to 2
+
         gameTimer = Timer.scheduledTimer(timeInterval: 1.5, target: self, selector: #selector(self.addBlock), userInfo: nil, repeats: true)
     }
 }
