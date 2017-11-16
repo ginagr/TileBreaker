@@ -42,8 +42,14 @@ class ViewController: UIViewController {
     
     var gameTimer: Timer!
     
+    let userDefults = UserDefaults.standard //returns shared defaults object
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if let highScore = userDefults.value(forKey: "highScore") { //check if highscore has been stored
+            highScoreText.text = String(describing: highScore)
+        }
         
         label.layer.borderColor = UIColor.gray.cgColor
         label.layer.borderWidth = 3.0;
@@ -55,7 +61,7 @@ class ViewController: UIViewController {
         gameOverLabel.layer.borderWidth = 3.0;
         
         //TODO: change back to 2
-        gameTimer = Timer.scheduledTimer(timeInterval: 2.0, target: self, selector: #selector(addBlock), userInfo: nil, repeats: true)
+        gameTimer = Timer.scheduledTimer(timeInterval: 1.5, target: self, selector: #selector(addBlock), userInfo: nil, repeats: true)
         
         //append all pattern buttons to array
         patternButtons.append(pattern1)
@@ -251,7 +257,7 @@ class ViewController: UIViewController {
                     self.patternFound = false
                     
                     //TODO: change back to 2
-                    self.gameTimer = Timer.scheduledTimer(timeInterval: 2.0, target: self, selector: #selector(self.addBlock), userInfo: nil, repeats: true)
+                    self.gameTimer = Timer.scheduledTimer(timeInterval: 1.5, target: self, selector: #selector(self.addBlock), userInfo: nil, repeats: true)
                 }
             })
             
@@ -320,6 +326,7 @@ class ViewController: UIViewController {
         
         if Int(highScoreText.text!)! < Int(scoreText.text!)! {
             highScoreText.text = scoreText.text
+            userDefults.set(highScoreText.text, forKey: "highScore")
         }
     }
     
@@ -339,7 +346,7 @@ class ViewController: UIViewController {
         updatePattern()
         
         //TODO: change back to 2
-        gameTimer = Timer.scheduledTimer(timeInterval: 2.0, target: self, selector: #selector(self.addBlock), userInfo: nil, repeats: true)
+        gameTimer = Timer.scheduledTimer(timeInterval: 1.5, target: self, selector: #selector(self.addBlock), userInfo: nil, repeats: true)
     }
 }
 
