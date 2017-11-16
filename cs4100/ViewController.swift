@@ -16,6 +16,10 @@ class ViewController: UIViewController {
     @IBOutlet weak var pattern4: UIButton!
     @IBOutlet weak var pattern5: UIButton!
     @IBOutlet weak var label: UILabel!
+    @IBOutlet weak var gameOverLabel: UILabel!
+    @IBOutlet weak var gameOverButton: UIButton!
+    @IBOutlet weak var gameOverText: UITextField!
+    @IBOutlet weak var scoreText: UILabel!
     
     var level = 1
     
@@ -45,7 +49,11 @@ class ViewController: UIViewController {
         screenWidth = screenSize.width
         screenHeight = screenSize.height
         
-        gameTimer = Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(addBlock), userInfo: nil, repeats: true)
+        gameOverLabel.layer.borderColor = UIColor.black.cgColor
+        gameOverLabel.layer.borderWidth = 3.0;
+        
+        //TODO: change back to 2
+        gameTimer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(addBlock), userInfo: nil, repeats: true)
         
         var patternButtons = [UIButton] () //append all pattern buttons to array
         patternButtons.append(pattern1)
@@ -89,14 +97,18 @@ class ViewController: UIViewController {
         let x = allButtons[0].frame.origin.x
         let height = (screenHeight/20)
         let width = allButtons[0].frame.size.width
-        for index in 0...allButtons.count-1 {
-            let y = height * CGFloat(index)
-            UIView.animate(withDuration: 0.1, animations:{
-                self.allButtons[index].frame = CGRect(x: x, y: y, width: width, height: height - 5)
-            })
-        }
-        if allButtons.count > 2 {
-            checkPattern()
+            for index in 0...allButtons.count-1 {
+                let y = height * CGFloat(index)
+                UIView.animate(withDuration: 0.1, animations:{
+                    self.allButtons[index].frame = CGRect(x: x, y: y, width: width, height: height - 5)
+                })
+            }
+            if (allButtons[allButtons.count-1].frame.origin.y) > (screenHeight - height - 1) {
+                gameOver()
+            } else {
+                if allButtons.count > 2 {
+                    checkPattern()
+                }
         }
     }
     
@@ -201,6 +213,8 @@ class ViewController: UIViewController {
     
     func patternFound(index: Int) {
         print("INDEX: \(index)")
+        let newScore = Int(scoreText.text!)! + 1
+        scoreText.text = String(newScore)
         gameTimer.invalidate()
         patternFound = true
         if level == 1 {
@@ -212,7 +226,7 @@ class ViewController: UIViewController {
             let height = allButtons[index].frame.size.height
             let x = allButtons[index].frame.origin.x
             
-            UIView.animate(withDuration: 1.0, animations:{
+            UIView.animate(withDuration: 0.7, animations:{
                 self.allButtons[index].frame = CGRect(x: x + self.screenWidth, y: self.allButtons[index].frame.origin.y, width: width, height: height)
                 self.allButtons[index+1].frame = CGRect(x: x + self.screenWidth, y: self.allButtons[index+1].frame.origin.y, width: width, height: height)
                 self.allButtons[index+2].frame = CGRect(x: x + self.screenWidth, y: self.allButtons[index+2].frame.origin.y, width: width, height: height)
@@ -230,7 +244,8 @@ class ViewController: UIViewController {
                     self.moveButtonsUp(i: index)
                     self.patternFound = false
                     
-                    self.gameTimer = Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(self.addBlock), userInfo: nil, repeats: true)
+                    //TODO: change back to 2
+                    self.gameTimer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(self.addBlock), userInfo: nil, repeats: true)
                 }
             })
             
@@ -262,7 +277,7 @@ class ViewController: UIViewController {
     }
     
     func moveButtonsUp(i: Int) {
-        UIView.animate(withDuration: 0.5, animations:{
+        UIView.animate(withDuration: 0.3, animations:{
             let diff = 3 * (self.screenHeight/20)
             if i <= self.allButtons.count-1 {
                 for index in i...(self.allButtons.count-1) {
@@ -286,6 +301,33 @@ class ViewController: UIViewController {
                 }
             }
         }
+    }
+    
+    func gameOver() { //tiles have reached bottom of screen
+        gameTimer.invalidate() //stop timer
+        view.bringSubview(toFront: gameOverLabel)
+        view.bringSubview(toFront: gameOverButton)
+        view.bringSubview(toFront: gameOverText)
+        gameOverLabel.isHidden = false
+        gameOverButton.isHidden = false
+        gameOverText.isHidden = false
+    }
+    
+    @IBAction func restartGame(_ sender: UIButton) {
+        print("restarting game")
+        for (_, element) in allButtons.enumerated() {
+            element.removeFromSuperview()
+        }
+        gameOverLabel.isHidden = true
+        gameOverButton.isHidden = true
+        gameOverText.isHidden = true
+        
+        scoreText.text = "0"
+        
+        allButtons.removeAll()
+        
+        //TODO: change back to 2
+        gameTimer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(self.addBlock), userInfo: nil, repeats: true)
     }
 }
 
