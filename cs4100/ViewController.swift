@@ -8,19 +8,6 @@
 
 import UIKit
 
-//shuffler for random pattern
-extension MutableCollection {
-    mutating func shuffle() {
-        let c = count
-        guard c > 1 else { return }
-        for (firstUnshuffled, unshuffledCount) in zip(indices, stride(from: c, to: 1, by: -1)) {
-            let d: IndexDistance = numericCast(arc4random_uniform(numericCast(unshuffledCount)))
-            let i = index(firstUnshuffled, offsetBy: d)
-            swapAt(firstUnshuffled, i)
-        }
-    }
-}
-
 class ViewController: UIViewController {
     
     @IBOutlet weak var pattern1: UIButton!
@@ -59,7 +46,7 @@ class ViewController: UIViewController {
         screenHeight = screenSize.height
         
         gameTimer = Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(addBlock), userInfo: nil, repeats: true)
-
+        
         var patternButtons = [UIButton] () //append all pattern buttons to array
         patternButtons.append(pattern1)
         patternButtons.append(pattern2)
@@ -87,40 +74,18 @@ class ViewController: UIViewController {
     }
     
     @objc func addBlock() {
+        let height = (screenHeight/20)
+        let button = UIButton(frame: CGRect(x: 20, y: 0, width: 150, height: height - 5))
+        button.backgroundColor = colorArray[generateRandomColor(level)]
+        button.addTarget(self, action: #selector(clickButton), for: .touchUpInside)
         
-//        if patternFound {
-//            let when = DispatchTime.now() + 1
-//            DispatchQueue.main.asyncAfter(deadline: when) {
-//                let height = (self.screenHeight/20)
-//                //        for index in 0...20 {
-//                //            let y = height * CGFloat(index)
-//                let button = UIButton(frame: CGRect(x: 20, y: 0, width: 150, height: height - 5))
-//                button.backgroundColor = self.colorArray[self.generateRandomColor(self.level)]
-//                button.addTarget(self, action: #selector(self.clickButton), for: .touchUpInside)
-//                //            button.setTitle("Num \(index)", for: .normal)
-//                self.allButtons.append(button)
-//                self.view.addSubview(button)
-//
-//                self.moveButtonsDown()
-//            }
-//            //wait till pattern is removed
-//        } else {
-            let height = (screenHeight/20)
-            //        for index in 0...20 {
-            //            let y = height * CGFloat(index)
-            let button = UIButton(frame: CGRect(x: 20, y: 0, width: 150, height: height - 5))
-            button.backgroundColor = colorArray[generateRandomColor(level)]
-            button.addTarget(self, action: #selector(clickButton), for: .touchUpInside)
-            //            button.setTitle("Num \(index)", for: .normal)
-            allButtons.append(button)
-            self.view.addSubview(button)
-            
-            moveButtonsDown()
-//        }
+        allButtons.insert(button, at: 0)
+        self.view.addSubview(button)
+        
+        moveButtonsDown()
     }
     
     func moveButtonsDown() {
-        updateButtons()
         let x = allButtons[0].frame.origin.x
         let height = (screenHeight/20)
         let width = allButtons[0].frame.size.width
@@ -191,7 +156,6 @@ class ViewController: UIViewController {
     }
     
     func checkPattern() {
-        
         switch level {
         case 1:
             for index in 0...(allButtons.count-3) {
@@ -259,7 +223,10 @@ class ViewController: UIViewController {
                     self.allButtons[index+1].removeFromSuperview()
                     self.allButtons[index+2].removeFromSuperview()
                     
-                    self.updateButtons()
+                    self.allButtons.remove(at: index)
+                    self.allButtons.remove(at: index)
+                    self.allButtons.remove(at: index)
+                    
                     self.moveButtonsUp(i: index)
                     self.patternFound = false
                     
@@ -295,15 +262,15 @@ class ViewController: UIViewController {
     }
     
     func moveButtonsUp(i: Int) {
-        updateButtons()
-            UIView.animate(withDuration: 0.5, animations:{
-                let diff = 3 * (self.screenHeight/20)
-                if i < self.allButtons.count-1 {
-                    for index in i...(self.allButtons.count-1) {
-                        self.allButtons[index].frame = CGRect(x: self.allButtons[i].frame.origin.x, y: self.allButtons[i].frame.origin.y - diff, width: self.allButtons[i].frame.size.width, height: self.allButtons[i].frame.size.height)
-                    }
+        UIView.animate(withDuration: 0.5, animations:{
+            let diff = 3 * (self.screenHeight/20)
+            if i <= self.allButtons.count-1 {
+                for index in i...(self.allButtons.count-1) {
+                    let idiff = self.allButtons[index].frame.origin.y - diff
+                    self.allButtons[index].frame = CGRect(x: self.allButtons[index].frame.origin.x, y: idiff, width: self.allButtons[index].frame.size.width, height: self.allButtons[index].frame.size.height)
                 }
-            })
+            }
+        })
     }
     
     func updateButtons() {
