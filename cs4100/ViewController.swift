@@ -508,7 +508,11 @@ class ViewController: UIViewController {
         
         updatePattern()
         
+        let date = NSDate()
+        initialTime = date.timeIntervalSince1970
+        
         speed = 2.0
+        gameTimer.invalidate() //stop timer
         gameTimer = Timer.scheduledTimer(timeInterval: speed, target: self, selector: #selector(self.addBlock), userInfo: nil, repeats: true)
     }
 }

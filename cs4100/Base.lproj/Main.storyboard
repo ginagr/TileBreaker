@@ -137,6 +137,16 @@
                                     <color key="titleColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="ady-7F-DXN">
+                                <rect key="frame" x="262" y="617" width="97" height="30"/>
+                                <color key="backgroundColor" red="0.41436202789784088" green="0.77801165803108807" blue="0.73258056039410069" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
+                                <color key="tintColor" red="0.1174570327309491" green="0.25124730791899114" blue="0.30098364637305697" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+                                <state key="normal" title="  NEW GAME  "/>
+                                <connections>
+                                    <action selector="restartGame:" destination="BYZ-38-t0r" eventType="touchUpInside" id="rbe-FL-apO"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -150,6 +160,7 @@
                             <constraint firstItem="npC-bB-8RA" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="4" id="FuJ-St-zl2"/>
                             <constraint firstItem="Sdp-X1-KGm" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="102" id="HLD-X3-UuS"/>
                             <constraint firstItem="WGb-Df-ktb" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="4" id="IRj-vg-vr4"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="ady-7F-DXN" secondAttribute="bottom" constant="20" id="KiW-S6-reV"/>
                             <constraint firstItem="WGb-Df-ktb" firstAttribute="leading" secondItem="npC-bB-8RA" secondAttribute="trailing" constant="1" id="Q9T-YS-pLg"/>
                             <constraint firstItem="Nzw-3s-VYC" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="60" id="SWF-ou-5vS"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="1pV-jk-DAU" secondAttribute="trailing" constant="11" id="SlC-fC-UHD"/>
@@ -166,6 +177,7 @@
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="Wu0-RA-mYw" secondAttribute="trailing" constant="29" id="gut-ZF-3MO"/>
                             <constraint firstItem="Y8Y-2P-MAW" firstAttribute="top" secondItem="npC-bB-8RA" secondAttribute="bottom" constant="3" id="m6X-P1-Syg"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="psR-Wx-3Yx" secondAttribute="trailing" constant="60" id="oKj-n9-3d9"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="ady-7F-DXN" secondAttribute="trailing" constant="16" id="oW5-IU-Ygi"/>
                             <constraint firstItem="4Hg-uJ-02I" firstAttribute="top" secondItem="Y8Y-2P-MAW" secondAttribute="bottom" constant="18" id="pJZ-6l-rp8"/>
                             <constraint firstItem="1pV-jk-DAU" firstAttribute="top" secondItem="Y8Y-2P-MAW" secondAttribute="bottom" constant="18" id="rsQ-aN-mvQ"/>
                             <constraint firstItem="ZYc-JG-tmA" firstAttribute="top" secondItem="uYW-Rx-zr6" secondAttribute="bottom" constant="6" id="vJo-Q1-qD7"/>
