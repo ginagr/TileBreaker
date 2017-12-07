@@ -3,5 +3,7 @@ Tile Breaker Game for iOS
 
 ## 
 
-###Master branch build status: 
+### Master branch build status: 
+
+
 ![](https://travis-ci.org/ginagr/procjam.svg?branch=master)
