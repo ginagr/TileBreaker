@@ -8,6 +8,7 @@
 
 import UIKit
 
+
 class ViewController: UIViewController {
     
     @IBOutlet weak var pattern1: UIButton!
@@ -30,6 +31,7 @@ class ViewController: UIViewController {
     var firstButton: UIButton!
     
     let colorArray = [UIColor(red:0.76, green:0.71, blue:0.93, alpha:1.0), UIColor(red:0.08, green:0.35, blue:0.40, alpha:1.0), UIColor(red:0.60, green:0.15, blue:0.35, alpha:1.0), UIColor.yellow, UIColor.orange]
+    
     let tripleColor = UIColor(red:0.96, green:0.27, blue:0.85, alpha:1.0) //pink
     let patternColor = UIColor(red:0.52, green:0.97, blue:0.49, alpha:1.0) //green
     
@@ -51,7 +53,7 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         if let highScore = userDefults.value(forKey: "highScore") { //check if highscore has been stored
             highScoreText.text = String(describing: highScore)
         }
