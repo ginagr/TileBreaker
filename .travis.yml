@@ -1,0 +1,4 @@
+osx_image: xcode9.2
+language: swift
+xcode_project: cs4100.xcodeproj # path to your xcodeproj folder
+xcode_scheme: cs4100
