@@ -8,7 +8,6 @@
 
 import UIKit
 
-
 class ViewController: UIViewController {
     
     @IBOutlet weak var pattern1: UIButton!
@@ -30,7 +29,7 @@ class ViewController: UIViewController {
     var firstColor: UIColor!
     var firstButton: UIButton!
     
-    let colorArray = [UIColor(red:0.76, green:0.71, blue:0.93, alpha:1.0), UIColor(red:0.08, green:0.35, blue:0.40, alpha:1.0), UIColor(red:0.60, green:0.15, blue:0.35, alpha:1.0), UIColor.yellow, UIColor.orange]
+    let colorArray = [UIColor(red:0.76, green:0.71, blue:0.93, alpha:1.0), UIColor(red:0.08, green:0.35, blue:0.40, alpha:1.0), UIColor(red:0.60, green:0.15, blue:0.35, alpha:1.0), UIColor(red:0.69, green:0.98, blue:0.97, alpha:1.0), UIColor(red:0.90, green:0.98, blue:0.62, alpha:1.0)]
     
     let tripleColor = UIColor(red:0.96, green:0.27, blue:0.85, alpha:1.0) //pink
     let patternColor = UIColor(red:0.52, green:0.97, blue:0.49, alpha:1.0) //green
@@ -494,7 +493,7 @@ class ViewController: UIViewController {
         }
     }
     
-    @IBAction func restartGame(_ sender: UIButton) {
+    @IBAction func restartGame() {
         //        print("restarting game")
         for (_, element) in allButtons.enumerated() {
             element.removeFromSuperview()
@@ -516,6 +515,11 @@ class ViewController: UIViewController {
         speed = 2.0
         gameTimer.invalidate() //stop timer
         gameTimer = Timer.scheduledTimer(timeInterval: speed, target: self, selector: #selector(self.addBlock), userInfo: nil, repeats: true)
+    }
+    
+    func levelChange(newLevel: Int) {
+        level = newLevel
+        restartGame()
     }
 }
 

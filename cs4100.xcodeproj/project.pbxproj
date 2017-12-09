@@ -12,6 +12,7 @@
 		33329DDB1FB0C335002004D4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 33329DD91FB0C335002004D4 /* Main.storyboard */; };
 		33329DDD1FB0C335002004D4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 33329DDC1FB0C335002004D4 /* Assets.xcassets */; };
 		33329DE01FB0C335002004D4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 33329DDE1FB0C335002004D4 /* LaunchScreen.storyboard */; };
+		33BA0AA61FDC797E00786021 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33BA0AA51FDC797E00786021 /* MainViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +23,7 @@
 		33329DDC1FB0C335002004D4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		33329DDF1FB0C335002004D4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		33329DE11FB0C335002004D4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		33BA0AA51FDC797E00786021 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +62,7 @@
 				33329DDC1FB0C335002004D4 /* Assets.xcassets */,
 				33329DDE1FB0C335002004D4 /* LaunchScreen.storyboard */,
 				33329DE11FB0C335002004D4 /* Info.plist */,
+				33BA0AA51FDC797E00786021 /* MainViewController.swift */,
 			);
 			path = cs4100;
 			sourceTree = "<group>";
@@ -136,6 +139,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				33BA0AA61FDC797E00786021 /* MainViewController.swift in Sources */,
 				33329DD81FB0C335002004D4 /* ViewController.swift in Sources */,
 				33329DD61FB0C335002004D4 /* AppDelegate.swift in Sources */,
 			);
