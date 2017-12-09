@@ -15,15 +15,15 @@ class ViewController: UIViewController {
     @IBOutlet weak var pattern3: UIButton!
     @IBOutlet weak var pattern4: UIButton!
     @IBOutlet weak var pattern5: UIButton!
-    @IBOutlet weak var label: UILabel!
+    @IBOutlet weak var labelOne: UILabel!
+    @IBOutlet weak var labelTwo: UILabel!
+    @IBOutlet weak var labelThree: UILabel!
     @IBOutlet weak var gameOverLabel: UILabel!
     @IBOutlet weak var gameOverButton: UIButton!
     @IBOutlet weak var gameOverText: UITextField!
     @IBOutlet weak var gameOverMessage: UILabel!
     @IBOutlet weak var scoreText: UILabel!
     @IBOutlet weak var highScoreText: UILabel!
-    
-    var level = 1
     
     var isHighLighted:Bool = false
     var firstColor: UIColor!
@@ -39,20 +39,31 @@ class ViewController: UIViewController {
     
     var patternFound:Bool = false
     
-    //get screen sizes
+    //Screen Sizes and Constants
     let screenSize = UIScreen.main.bounds
     var screenWidth: CGFloat!
     var screenHeight: CGFloat!
+    var xConst: CGFloat!
+    var heightConst: CGFloat!
+    var widthConst: CGFloat!
     
     var gameTimer: Timer!
     var initialTime: Double!
     var speed = 2.0
     
+    var level: Int!
+    
     let userDefults = UserDefaults.standard //returns shared defaults object
+    
+    var label: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        if (level) == nil {
+            level = 1
+        }
+        print("LEVEL: \(level)")
         if let highScore = userDefults.value(forKey: "highScore") { //check if highscore has been stored
             highScoreText.text = String(describing: highScore)
         }
@@ -60,25 +71,46 @@ class ViewController: UIViewController {
         let date = NSDate()
         initialTime = date.timeIntervalSince1970
         
+        //append all pattern buttons to array
+        patternButtons.append(pattern1)
+        patternButtons.append(pattern2)
+        patternButtons.append(pattern3)
         
+        // hide/unhide level boxes & pattern buttons
+        if level == 1 {
+            label = labelOne
+            labelTwo.isHidden = true
+            labelThree.isHidden = true
+            pattern4.isHidden = true
+            pattern5.isHidden = true
+        } else if level == 2 {
+            label = labelTwo
+            labelOne.isHidden = true
+            labelThree.isHidden = true
+            patternButtons.append(pattern4)
+            pattern5.isHidden = true
+        } else {
+            label = labelThree
+            labelOne.isHidden = true
+            labelTwo.isHidden = true
+            patternButtons.append(pattern4)
+            patternButtons.append(pattern5)
+        }
         label.layer.borderColor = UIColor.gray.cgColor
         label.layer.borderWidth = 3.0;
         
+        //set constants
         screenWidth = screenSize.width
         screenHeight = screenSize.height
+        xConst = screenWidth * 0.05
+        heightConst = (screenHeight/20) - 5
+        widthConst = (screenWidth/2) - (screenWidth * 0.05)
         
         gameOverLabel.layer.borderColor = UIColor.black.cgColor
         gameOverLabel.layer.borderWidth = 3.0;
         
         gameTimer = Timer.scheduledTimer(timeInterval: speed, target: self, selector: #selector(addBlock), userInfo: nil, repeats: true)
         
-        //append all pattern buttons to array
-        patternButtons.append(pattern1)
-        patternButtons.append(pattern2)
-        patternButtons.append(pattern3)
-        //        patternButtons.append(pattern4)
-        //        patternButtons.append(pattern5)
-        //
         updatePattern()
         
     }
@@ -104,13 +136,10 @@ class ViewController: UIViewController {
     
     @objc func addBlock() {
         checkTime()
-        let height = (screenHeight/20)
-        let width = (screenWidth/2) - (screenWidth * 0.05)
-        let x = (screenWidth * 0.05)
-        let button = UIButton(frame: CGRect(x: x, y: 0, width: width, height: height - 5))
+        let button = UIButton(frame: CGRect(x: xConst, y: 0, width: widthConst, height: heightConst))
         button.backgroundColor = checkGrammar(color: colorArray[generateRandomColor(level)])
         if button.backgroundColor == tripleColor || button.backgroundColor == patternColor {
-            button.layer.borderWidth = height * 0.25;
+            button.layer.borderWidth = heightConst * 0.25;
             button.layer.borderColor = button.backgroundColor?.cgColor
             button.backgroundColor = UIColor.white
         }
@@ -167,13 +196,12 @@ class ViewController: UIViewController {
     }
     
     func moveButtonsDown() {
-        let x = allButtons[0].frame.origin.x
         let height = (screenHeight/20)
-        let width = allButtons[0].frame.size.width
         for index in 0...allButtons.count-1 {
             let y = height * CGFloat(index)
+            let x = allButtons[index].frame.origin.x
             UIView.animate(withDuration: 0.1, animations:{
-                self.allButtons[index].frame = CGRect(x: x, y: y, width: width, height: height - 5)
+                self.allButtons[index].frame = CGRect(x: x, y: y, width: self.widthConst, height: self.heightConst)
             })
         }
         if (allButtons[allButtons.count-1].frame.origin.y) > (screenHeight - height - 1) {
@@ -187,7 +215,10 @@ class ViewController: UIViewController {
     
     @IBAction func clickButton(sender: UIButton!) {
         if isHighLighted == false { //first button hasn't been clicked
-            sender.layer.shadowOpacity = 1.0 //add shadow
+            
+            UIButton.animate(withDuration: 0.05) { //move button to right to show clicked
+                sender.frame = CGRect(x: sender.frame.origin.x + 5, y: sender.frame.origin.y, width: sender.frame.width, height: sender.frame.height)
+            }
             isHighLighted = true;
             
             firstColor = sender.backgroundColor; //save color
@@ -198,15 +229,18 @@ class ViewController: UIViewController {
     }
     
     func handleSwitch(sender: UIButton!) {
+        //normal switch
         if (firstColor != UIColor.white) && (sender.backgroundColor != UIColor.white) {
             UIButton.animate(withDuration: 0.75) {
                 self.firstButton.layer.shadowOpacity = 0.0 //shadow
                 self.firstButton.backgroundColor = sender.backgroundColor //switch colors
                 sender.backgroundColor = self.firstColor
+                self.firstButton.frame = CGRect(x: self.xConst, y: self.firstButton.frame.origin.y, width: self.widthConst, height: self.heightConst)
             }
             isHighLighted = false //reset
             checkPattern()
         } else {
+            //check power ups
             var tripleBool = false
             if firstButton.backgroundColor == UIColor.white {
                 if firstButton.layer.borderColor == tripleColor.cgColor {
@@ -376,12 +410,14 @@ class ViewController: UIViewController {
             }
             break;
         case 2:
-            for index in 0...(allButtons.count-4) {
-                if allButtons[index].backgroundColor == pattern1.backgroundColor {
-                    if allButtons[index+1].backgroundColor == pattern2.backgroundColor {
-                        if allButtons[index+2].backgroundColor == pattern3.backgroundColor {
-                            if allButtons[index+3].backgroundColor == pattern4.backgroundColor {
-                                patternFound(index: index)
+            if allButtons.count > 4 {
+                for index in 0...(allButtons.count-4) {
+                    if allButtons[index].backgroundColor == pattern1.backgroundColor {
+                        if allButtons[index+1].backgroundColor == pattern2.backgroundColor {
+                            if allButtons[index+2].backgroundColor == pattern3.backgroundColor {
+                                if allButtons[index+3].backgroundColor == pattern4.backgroundColor {
+                                    patternFound(index: index)
+                                }
                             }
                         }
                     }
@@ -389,13 +425,15 @@ class ViewController: UIViewController {
             }
             break;
         default:
-            for index in 0...(allButtons.count-5) {
-                if allButtons[index].backgroundColor == pattern1.backgroundColor {
-                    if allButtons[index+1].backgroundColor == pattern2.backgroundColor {
-                        if allButtons[index+2].backgroundColor == pattern3.backgroundColor {
-                            if allButtons[index+3].backgroundColor == pattern4.backgroundColor {
-                                if allButtons[index+4].backgroundColor == pattern5.backgroundColor {
-                                    patternFound(index: index)
+            if allButtons.count > 5 {
+                for index in 0...(allButtons.count-5) {
+                    if allButtons[index].backgroundColor == pattern1.backgroundColor {
+                        if allButtons[index+1].backgroundColor == pattern2.backgroundColor {
+                            if allButtons[index+2].backgroundColor == pattern3.backgroundColor {
+                                if allButtons[index+3].backgroundColor == pattern4.backgroundColor {
+                                    if allButtons[index+4].backgroundColor == pattern5.backgroundColor {
+                                        patternFound(index: index)
+                                    }
                                 }
                             }
                         }
@@ -516,10 +554,9 @@ class ViewController: UIViewController {
         gameTimer.invalidate() //stop timer
         gameTimer = Timer.scheduledTimer(timeInterval: speed, target: self, selector: #selector(self.addBlock), userInfo: nil, repeats: true)
     }
-    
-    func levelChange(newLevel: Int) {
-        level = newLevel
-        restartGame()
+    @IBAction func backToLevels() {
+        let viewController = storyboard?.instantiateViewController(withIdentifier: "MainViewController") as! MainViewController
+        self.present(viewController, animated:false, completion:nil)
     }
 }
 

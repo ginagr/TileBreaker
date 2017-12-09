@@ -5,7 +5,7 @@
 ## Build generated
 build/
 DerivedData/
-
+cs4100.xcodeproj/project.*
 ## Various settings
 *.pbxuser
 !default.pbxuser
