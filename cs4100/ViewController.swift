@@ -145,12 +145,12 @@ class ViewController: UIViewController {
             button.setTitle(tempText, for: .normal)
         }
         
-//        button.backgroundColor = checkGrammar(color: colorArray[generateRandomColor(level)])
-//        if button.backgroundColor == tripleColor || button.backgroundColor == patternColor {
-//            button.layer.borderWidth = heightConst * 0.25;
-//            button.layer.borderColor = button.backgroundColor?.cgColor
-//            button.backgroundColor = UIColor.white
-//        }
+        //        button.backgroundColor = checkGrammar(color: colorArray[generateRandomColor(level)])
+        //        if button.backgroundColor == tripleColor || button.backgroundColor == patternColor {
+        //            button.layer.borderWidth = heightConst * 0.25;
+        //            button.layer.borderColor = button.backgroundColor?.cgColor
+        //            button.backgroundColor = UIColor.white
+        //        }
         button.addTarget(self, action: #selector(clickButton), for: .touchUpInside)
         
         allButtons.insert(button, at: 0)
@@ -204,7 +204,8 @@ class ViewController: UIViewController {
         let num = Int(widthConst/24) //make sure right num of emojis to fit phone size
         var text = ""
         var emoji = ""
-        if allButtons[0].backgroundColor == color && allButtons[1].backgroundColor == color { //three colors in a row
+        if allButtons[0].backgroundColor == color &&
+            allButtons[1].backgroundColor == color { //three colors in a row
             emoji = "🗡"
         } else if color  == patternButtons[0].backgroundColor &&
             allButtons[0].backgroundColor == patternButtons[1].backgroundColor &&
@@ -212,17 +213,16 @@ class ViewController: UIViewController {
             emoji = "💥"
         } else if color == patternButtons[2].backgroundColor &&
             allButtons[0].backgroundColor == patternButtons[1].backgroundColor &&
-            allButtons[1].backgroundColor == patternButtons[2].backgroundColor { // reverse pattern
+            allButtons[1].backgroundColor == patternButtons[0].backgroundColor { // reverse pattern
             emoji = "⏸"
         } else if allButtons.count < 3 { //check for last grammar - 4 tiles
             return text
         } else {
             let tempColors = [color, allButtons[0].backgroundColor, allButtons[1].backgroundColor, allButtons[2].backgroundColor]
-            if tempColors[0] == tempColors[1] && tempColors[2] == tempColors[3] {
+            if tempColors[0] == tempColors[1] && tempColors[2] == tempColors[3] { //two doubles in a row
                 emoji = "💣"
             }
         }
-        
         if emoji.count > 0 {
             for _ in 1...num {
                 text = text + emoji
@@ -233,9 +233,40 @@ class ViewController: UIViewController {
     }
     
     func levelTwoGrammar(color: UIColor) -> String {
-        let num = Int(widthConst/24) //make sure right num of emojis to fit
+        let num = Int(widthConst/24) //make sure right num of emojis to fit phone size
         var text = ""
-        
+        var emoji = ""
+        if allButtons[0].backgroundColor == color &&    //three colors in a row
+            allButtons[1].backgroundColor == color {
+            emoji = "🗡"
+        } else if (color  == patternButtons[0].backgroundColor &&   //pattern
+            allButtons[0].backgroundColor == patternButtons[1].backgroundColor &&
+            allButtons[1].backgroundColor == patternButtons[2].backgroundColor) ||
+            (color  == patternButtons[1].backgroundColor &&
+                allButtons[0].backgroundColor == patternButtons[2].backgroundColor &&
+                allButtons[1].backgroundColor == patternButtons[3].backgroundColor) {
+            emoji = "💥"
+        } else if (color == patternButtons[2].backgroundColor &&    // reverse pattern
+            allButtons[0].backgroundColor == patternButtons[1].backgroundColor &&
+            allButtons[1].backgroundColor == patternButtons[0].backgroundColor) ||
+            (color == patternButtons[3].backgroundColor &&
+                allButtons[0].backgroundColor == patternButtons[2].backgroundColor &&
+                allButtons[1].backgroundColor == patternButtons[1].backgroundColor) {
+            emoji = "⏸"
+        } else if allButtons.count < 3 { //check for last grammar - 4 tiles
+            return text
+        } else {
+            let tempColors = [color, allButtons[0].backgroundColor, allButtons[1].backgroundColor, allButtons[2].backgroundColor]
+            if tempColors[0] == tempColors[1] && tempColors[2] == tempColors[3] { //two doubles in a row
+                emoji = "💣"
+            }
+        }
+        if emoji.count > 0 {
+            for _ in 1...num {
+                text = text + emoji
+            }
+            return text
+        }
         return text
     }
     
