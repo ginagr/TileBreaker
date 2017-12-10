@@ -334,7 +334,6 @@ class ViewController: UIViewController {
     
     @IBAction func clickButton(sender: UIButton!) {
         if isHighLighted == false { //first button hasn't been clicked
-            
             UIButton.animate(withDuration: 0.05) { //move button to right to show clicked
                 sender.frame = CGRect(x: sender.frame.origin.x + 5, y: sender.frame.origin.y, width: sender.frame.width, height: sender.frame.height)
             }
@@ -348,52 +347,60 @@ class ViewController: UIViewController {
     }
     
     func handleSwitch(sender: UIButton!) {
-        //normal switch
-        if (firstColor != UIColor.white) && (sender.backgroundColor != UIColor.white) {
-            UIButton.animate(withDuration: 0.75) {
-                self.firstButton.layer.shadowOpacity = 0.0 //shadow
-                self.firstButton.backgroundColor = sender.backgroundColor //switch colors
-                sender.backgroundColor = self.firstColor
-                self.firstButton.frame = CGRect(x: self.xConst, y: self.firstButton.frame.origin.y, width: self.widthConst, height: self.heightConst)
-            }
-            isHighLighted = false //reset
-            checkPattern()
+        var emoji = ""
+        var senderBool = false
+        var firstBool = false
+        if (sender.titleLabel?.text) == nil || (firstButton.titleLabel?.text) == nil {
+            normalSwitch(sender: sender)
+        } else if (sender.titleLabel?.text) != nil {
+            emoji = (sender.titleLabel?.text)!
+            senderBool = true
+        } else if (firstButton.titleLabel?.text) != nil {
+            emoji = (firstButton.titleLabel?.text)!
+            firstBool = true
         } else {
-            //check power ups
-            var tripleBool = false
-            if firstButton.backgroundColor == UIColor.white {
-                if firstButton.layer.borderColor == tripleColor.cgColor {
-                    tripleBool = true
-                }
-            } else if sender.layer.borderColor == tripleColor.cgColor {
-                tripleBool = true
+            print("SOMETHING WENT WRONG IN SWITCHING")
+            return //something went wrong
+        }
+        
+        switch emoji {
+        case "🗡": // delete both tiles
+            UIButton.animate(withDuration: 0.75) {
+                self.firstButton.backgroundColor = UIColor.black //switch colors
+                self.firstButton.frame = CGRect(x: self.xConst + self.screenWidth, y: self.firstButton.frame.origin.y, width: self.widthConst, height: self.heightConst)
+                
+                sender.backgroundColor = UIColor.black //switch colors
+                sender.frame = CGRect(x: self.xConst + self.screenWidth, y: sender.frame.origin.y, width: self.widthConst, height: self.heightConst)
             }
             
-            if tripleBool { //delete sender tile
-                let width = firstButton.frame.size.width
-                let height = firstButton.frame.size.height
-                let x = firstButton.frame.origin.x
-                
-                UIButton.animate(withDuration: 0.75) {
-                    self.firstButton.layer.shadowOpacity = 0.0 //shadow
-                    self.firstButton.backgroundColor = UIColor.black //switch colors
-                    self.firstButton.frame = CGRect(x: x + self.screenWidth, y: self.firstButton.frame.origin.y, width: width, height: height)
-                    
-                    sender.backgroundColor = UIColor.black //switch colors
-                    sender.frame = CGRect(x: x + self.screenWidth, y: sender.frame.origin.y, width: width, height: height)
-                }
-                
-                let newScore = Int(scoreText.text!)! + 1
-                scoreText.text = String(newScore)
-                
-                firstButton.removeFromSuperview()
-                allButtons = allButtons.filter {$0 != firstButton}
-                
-                sender.removeFromSuperview()
-                allButtons = allButtons.filter {$0 != sender}
-                
-                isHighLighted = false //reset
-                checkPattern()
+            let newScore = Int(scoreText.text!)! + 1
+            scoreText.text = String(newScore)
+            
+            //remove both buttons from view & array
+            firstButton.removeFromSuperview()
+            allButtons = allButtons.filter {$0 != firstButton}
+            
+            sender.removeFromSuperview()
+            allButtons = allButtons.filter {$0 != sender}
+            
+            isHighLighted = false //reset
+            checkPattern()
+            break
+        case "💥": //delete all of tile color
+            //TODO: all colors delete
+            break
+        case "⏸":
+            //TODO: pause for 5 sec
+            break
+        case "💣":
+            //TODO: explode +=3 tiles
+            break
+        default:
+            print("SOMETHING WENT WRONG IN SWITCHING AGAIN")
+            return //something went wrong
+        }
+        
+        
             } else { //delete all tiles of color sender
                 let width = firstButton.frame.size.width
                 let height = firstButton.frame.size.height
@@ -443,6 +450,17 @@ class ViewController: UIViewController {
                 checkPattern()
             }
         }
+    }
+    
+    func normalSwitch(sender: UIButton!) {
+        UIButton.animate(withDuration: 0.75) {
+            self.firstButton.layer.shadowOpacity = 0.0 //shadow
+            self.firstButton.backgroundColor = sender.backgroundColor //switch colors
+            sender.backgroundColor = self.firstColor
+            self.firstButton.frame = CGRect(x: self.xConst, y: self.firstButton.frame.origin.y, width: self.widthConst, height: self.heightConst)
+        }
+        isHighLighted = false //reset
+        checkPattern()
     }
     
     

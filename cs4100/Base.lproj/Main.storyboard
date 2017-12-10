@@ -7,7 +7,6 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
         <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -114,12 +113,6 @@
                                 <fontDescription key="fontDescription" type="system" weight="black" pointSize="32"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7KC-cO-Kgn">
-                                <rect key="frame" x="115" y="561" width="0.0" height="0.0"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Sdp-X1-KGm">
                                 <rect key="frame" x="102" y="231" width="171" height="39"/>
                                 <fontDescription key="fontDescription" type="system" weight="black" pointSize="22"/>
@@ -312,7 +305,6 @@
                             <constraint firstItem="HJy-HS-Fdz" firstAttribute="trailing" secondItem="ady-7F-DXN" secondAttribute="trailing" id="aW0-l6-jFA"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="uYW-Rx-zr6" secondAttribute="trailing" constant="29" id="aee-sR-ZBx"/>
                             <constraint firstItem="aAH-Ip-NBL" firstAttribute="top" secondItem="Y8Y-2P-MAW" secondAttribute="bottom" constant="24" id="ba7-tS-n0M"/>
-                            <constraint firstItem="7KC-cO-Kgn" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="99" id="dNZ-go-to5"/>
                             <constraint firstItem="MuE-NR-xbv" firstAttribute="trailing" secondItem="ZYc-JG-tmA" secondAttribute="trailing" id="dSf-zH-5Ng"/>
                             <constraint firstItem="uYW-Rx-zr6" firstAttribute="top" secondItem="Wu0-RA-mYw" secondAttribute="bottom" constant="6" id="eCG-oO-iTz"/>
                             <constraint firstItem="Wu0-RA-mYw" firstAttribute="top" secondItem="aAH-Ip-NBL" secondAttribute="bottom" constant="11" id="fy2-M4-8te"/>
@@ -320,7 +312,6 @@
                             <constraint firstItem="fOy-Xp-OZu" firstAttribute="trailing" secondItem="1pV-jk-DAU" secondAttribute="trailing" id="jZr-Eo-P2L"/>
                             <constraint firstItem="PCd-sx-mQd" firstAttribute="leading" secondItem="fOy-Xp-OZu" secondAttribute="leading" id="joG-PE-HCl"/>
                             <constraint firstItem="Y8Y-2P-MAW" firstAttribute="top" secondItem="npC-bB-8RA" secondAttribute="bottom" constant="3" id="m6X-P1-Syg"/>
-                            <constraint firstAttribute="bottom" secondItem="7KC-cO-Kgn" secondAttribute="bottom" constant="106" id="nVO-6Y-ZOI"/>
                             <constraint firstItem="PCd-sx-mQd" firstAttribute="trailing" secondItem="fOy-Xp-OZu" secondAttribute="trailing" id="nbD-y4-lVT"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="psR-Wx-3Yx" secondAttribute="trailing" constant="60" id="oKj-n9-3d9"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="ady-7F-DXN" secondAttribute="trailing" constant="16" id="oW5-IU-Ygi"/>
