@@ -144,13 +144,7 @@ class ViewController: UIViewController {
         } else {
             button.setTitle(tempText, for: .normal)
         }
-        
-        //        button.backgroundColor = checkGrammar(color: colorArray[generateRandomColor(level)])
-        //        if button.backgroundColor == tripleColor || button.backgroundColor == patternColor {
-        //            button.layer.borderWidth = heightConst * 0.25;
-        //            button.layer.borderColor = button.backgroundColor?.cgColor
-        //            button.backgroundColor = UIColor.white
-        //        }
+
         button.addTarget(self, action: #selector(clickButton), for: .touchUpInside)
         
         allButtons.insert(button, at: 0)
@@ -333,9 +327,37 @@ class ViewController: UIViewController {
     }
     
     @IBAction func clickButton(sender: UIButton!) {
+        if (sender.titleLabel?.text) != nil { //checking if pause button or bomb are clicked
+            if (sender.titleLabel!.text)![((sender.titleLabel!.text)!.startIndex)] == "⏸" { //pause for five seconds
+                UIButton.animate(withDuration: 0.75) { //eliminate pause tile
+                    sender.backgroundColor = UIColor.black //switch colors
+                    sender.frame = CGRect(x: self.xConst + self.screenWidth, y: sender.frame.origin.y, width: self.widthConst, height: self.heightConst)
+                }
+                if isHighLighted { //unclick button
+                    UIButton.animate(withDuration: 0.05) { //move button back to regular x position
+                        sender.frame = CGRect(x: self.xConst, y: sender.frame.origin.y, width: self.widthConst, height: self.heightConst)
+                    }
+                    isHighLighted = false
+                }
+                gameTimer.invalidate() //stop timer
+                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(5), execute: { //pausing timer
+                    self.gameTimer = Timer.scheduledTimer(timeInterval: self.speed, target: self, selector: #selector(self.addBlock), userInfo: nil, repeats: true)
+                })
+                return
+            } else if (sender.titleLabel!.text)![((sender.titleLabel!.text)!.startIndex)] == "💣" { //explode two tiles +-
+            
+                if isHighLighted { //unclick button
+                    UIButton.animate(withDuration: 0.05) { //move button back to regular x position
+                        sender.frame = CGRect(x: self.xConst, y: sender.frame.origin.y, width: self.widthConst, height: self.heightConst)
+                    }
+                    isHighLighted = false
+                }
+                return
+            }
+        }
         if isHighLighted == false { //first button hasn't been clicked
             UIButton.animate(withDuration: 0.05) { //move button to right to show clicked
-                sender.frame = CGRect(x: sender.frame.origin.x + 5, y: sender.frame.origin.y, width: sender.frame.width, height: sender.frame.height)
+                sender.frame = CGRect(x: self.xConst + 5, y: sender.frame.origin.y, width: self.widthConst, height: self.heightConst)
             }
             isHighLighted = true;
             
@@ -351,17 +373,14 @@ class ViewController: UIViewController {
         var senderBool = false
         var firstBool = false
         if (sender.titleLabel?.text) == nil && (firstButton.titleLabel?.text) == nil {
-            print("NORMAL SWITCH")
             normalSwitch(sender: sender)
             return
         } else if (sender.titleLabel?.text) != nil {
             emoji = (sender.titleLabel?.text)!
             senderBool = true
-            print("SENDER BOOL")
         } else if (firstButton.titleLabel?.text) != nil {
             emoji = (firstButton.titleLabel?.text)!
             firstBool = true
-            print("FIRST BOOL")
         } else {
             print("SOMETHING WENT WRONG IN SWITCHING")
             return //something went wrong
@@ -398,11 +417,9 @@ class ViewController: UIViewController {
                 
                 if senderBool { //eliminate emoji tile
                     tempColor = self.firstButton.backgroundColor!
-//                    sender.backgroundColor = UIColor.black //switch colors
                     sender.frame = CGRect(x: self.xConst + self.screenWidth, y: sender.frame.origin.y, width: self.widthConst, height: self.heightConst)
                 } else {
                     tempColor = sender.backgroundColor!
-//                    self.firstButton.backgroundColor = UIColor.black //switch colors
                     self.firstButton.frame = CGRect(x: self.xConst + self.screenWidth, y: self.firstButton.frame.origin.y, width: self.widthConst, height: self.heightConst)
                 }
                 
@@ -434,9 +451,16 @@ class ViewController: UIViewController {
             isHighLighted = false //reset
             checkPattern()
             break
-        case "⏸":
-            //TODO: pause for 5 sec
-            break
+//        case "⏸": //pause for
+//            gameTimer.invalidate() //stop timer
+//            UIButton.animate(withDuration: 0.75) {
+//
+//
+//            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(5), execute: {
+//                self.gameTimer = Timer.scheduledTimer(timeInterval: self.speed, target: self, selector: #selector(self.addBlock), userInfo: nil, repeats: true)
+//            })
+//
+//            break
         case "💣":
             //TODO: explode +=3 tiles
             break
@@ -444,9 +468,6 @@ class ViewController: UIViewController {
             print("SOMETHING WENT WRONG IN SWITCHING AGAIN")
             return //something went wrong
         }
-    
-        
-        
     }
     
     func normalSwitch(sender: UIButton!) {
