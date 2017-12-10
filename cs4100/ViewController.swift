@@ -137,12 +137,20 @@ class ViewController: UIViewController {
     @objc func addBlock() {
         checkTime()
         let button = UIButton(frame: CGRect(x: xConst, y: 0, width: widthConst, height: heightConst))
-        button.backgroundColor = checkGrammar(color: colorArray[generateRandomColor(level)])
-        if button.backgroundColor == tripleColor || button.backgroundColor == patternColor {
-            button.layer.borderWidth = heightConst * 0.25;
-            button.layer.borderColor = button.backgroundColor?.cgColor
-            button.backgroundColor = UIColor.white
+        let tempColor = colorArray[generateRandomColor(level)]
+        let tempText = checkGrammar(color: tempColor)
+        if tempText.count < 1 {
+            button.backgroundColor = tempColor
+        } else {
+            button.setTitle(tempText, for: .normal)
         }
+        
+//        button.backgroundColor = checkGrammar(color: colorArray[generateRandomColor(level)])
+//        if button.backgroundColor == tripleColor || button.backgroundColor == patternColor {
+//            button.layer.borderWidth = heightConst * 0.25;
+//            button.layer.borderColor = button.backgroundColor?.cgColor
+//            button.backgroundColor = UIColor.white
+//        }
         button.addTarget(self, action: #selector(clickButton), for: .touchUpInside)
         
         allButtons.insert(button, at: 0)
@@ -175,24 +183,67 @@ class ViewController: UIViewController {
         }
     }
     
-    func checkGrammar(color: UIColor) -> UIColor {
+    func checkGrammar(color: UIColor) -> String {
         if allButtons.count < 2 { //not enough colors to change grammar
-            return color
+            return ""
         } else {
-            if allButtons[0].backgroundColor == color { //three colors in a row
-                if allButtons[1].backgroundColor == allButtons[0].backgroundColor {
-                    return tripleColor
-                }
+            switch(level) {
+            case 1:
+                return levelOneGrammar(color: color)
+            case 2:
+                return levelTwoGrammar(color: color)
+            case 3:
+                return levelThreeGrammar(color: color)
+            default:
+                return ""
             }
-            if color == patternButtons[0].backgroundColor { //pattern
-                if allButtons[0].backgroundColor == patternButtons[1].backgroundColor {
-                    if allButtons[1].backgroundColor == patternButtons[2].backgroundColor {
-                        return patternColor
-                    }
-                }
-            }
-            return color
         }
+    }
+    
+    func levelOneGrammar(color: UIColor) -> String {
+        let num = Int(widthConst/24) //make sure right num of emojis to fit phone size
+        var text = ""
+        var emoji = ""
+        if allButtons[0].backgroundColor == color && allButtons[1].backgroundColor == color { //three colors in a row
+            emoji = "🗡"
+        } else if color  == patternButtons[0].backgroundColor &&
+            allButtons[0].backgroundColor == patternButtons[1].backgroundColor &&
+            allButtons[1].backgroundColor == patternButtons[2].backgroundColor { //pattern
+            emoji = "💥"
+        } else if color == patternButtons[2].backgroundColor &&
+            allButtons[0].backgroundColor == patternButtons[1].backgroundColor &&
+            allButtons[1].backgroundColor == patternButtons[2].backgroundColor { // reverse pattern
+            emoji = "⏸"
+        } else if allButtons.count < 3 { //check for last grammar - 4 tiles
+            return text
+        } else {
+            let tempColors = [color, allButtons[0].backgroundColor, allButtons[1].backgroundColor, allButtons[2].backgroundColor]
+            if tempColors[0] == tempColors[1] && tempColors[2] == tempColors[3] {
+                emoji = "💣"
+            }
+        }
+        
+        if emoji.count > 0 {
+            for _ in 1...num {
+                text = text + emoji
+            }
+            return text
+        }
+        return text
+    }
+    
+    func levelTwoGrammar(color: UIColor) -> String {
+        let num = Int(widthConst/24) //make sure right num of emojis to fit
+        var text = ""
+        
+        return text
+    }
+    
+    func levelThreeGrammar(color: UIColor) -> String {
+        let num = Int(widthConst/24) //make sure right num of emojis to fit
+        var text = ""
+        
+        return text
     }
     
     func moveButtonsDown() {
