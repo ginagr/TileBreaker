@@ -271,9 +271,46 @@ class ViewController: UIViewController {
     }
     
     func levelThreeGrammar(color: UIColor) -> String {
-        let num = Int(widthConst/24) //make sure right num of emojis to fit
+        let num = Int(widthConst/24) //make sure right num of emojis to fit phone size
         var text = ""
-        
+        var emoji = ""
+        if allButtons[0].backgroundColor == color &&    //three colors in a row
+            allButtons[1].backgroundColor == color {
+            emoji = "🗡"
+        } else if (color  == patternButtons[0].backgroundColor &&   //pattern
+            allButtons[0].backgroundColor == patternButtons[1].backgroundColor &&
+            allButtons[1].backgroundColor == patternButtons[2].backgroundColor) ||
+            (color  == patternButtons[1].backgroundColor &&
+                allButtons[0].backgroundColor == patternButtons[2].backgroundColor &&
+                allButtons[1].backgroundColor == patternButtons[3].backgroundColor) ||
+            (color  == patternButtons[2].backgroundColor &&
+                allButtons[0].backgroundColor == patternButtons[3].backgroundColor &&
+                allButtons[1].backgroundColor == patternButtons[4].backgroundColor) {
+            emoji = "💥"
+        } else if (color == patternButtons[2].backgroundColor &&    // reverse pattern
+            allButtons[0].backgroundColor == patternButtons[1].backgroundColor &&
+            allButtons[1].backgroundColor == patternButtons[0].backgroundColor) ||
+            (color == patternButtons[3].backgroundColor &&
+                allButtons[0].backgroundColor == patternButtons[2].backgroundColor &&
+                allButtons[1].backgroundColor == patternButtons[1].backgroundColor) ||
+            (color == patternButtons[4].backgroundColor &&
+                allButtons[0].backgroundColor == patternButtons[3].backgroundColor &&
+                allButtons[1].backgroundColor == patternButtons[2].backgroundColor) {
+            emoji = "⏸"
+        } else if allButtons.count < 3 { //check for last grammar - 4 tiles
+            return text
+        } else {
+            let tempColors = [color, allButtons[0].backgroundColor, allButtons[1].backgroundColor, allButtons[2].backgroundColor]
+            if tempColors[0] == tempColors[1] && tempColors[2] == tempColors[3] { //two doubles in a row
+                emoji = "💣"
+            }
+        }
+        if emoji.count > 0 {
+            for _ in 1...num {
+                text = text + emoji
+            }
+            return text
+        }
         return text
     }
     
