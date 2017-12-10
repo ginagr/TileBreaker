@@ -350,20 +350,24 @@ class ViewController: UIViewController {
         var emoji = ""
         var senderBool = false
         var firstBool = false
-        if (sender.titleLabel?.text) == nil || (firstButton.titleLabel?.text) == nil {
+        if (sender.titleLabel?.text) == nil && (firstButton.titleLabel?.text) == nil {
+            print("NORMAL SWITCH")
             normalSwitch(sender: sender)
+            return
         } else if (sender.titleLabel?.text) != nil {
             emoji = (sender.titleLabel?.text)!
             senderBool = true
+            print("SENDER BOOL")
         } else if (firstButton.titleLabel?.text) != nil {
             emoji = (firstButton.titleLabel?.text)!
             firstBool = true
+            print("FIRST BOOL")
         } else {
             print("SOMETHING WENT WRONG IN SWITCHING")
             return //something went wrong
         }
-        
-        switch emoji {
+
+        switch emoji[emoji.startIndex] {
         case "🗡": // delete both tiles
             UIButton.animate(withDuration: 0.75) {
                 self.firstButton.backgroundColor = UIColor.black //switch colors
@@ -387,7 +391,48 @@ class ViewController: UIViewController {
             checkPattern()
             break
         case "💥": //delete all of tile color
-            //TODO: all colors delete
+            var colorButtons = [UIButton] ()
+            
+            UIButton.animate(withDuration: 0.75) {
+                var tempColor: UIColor
+                
+                if senderBool { //eliminate emoji tile
+                    tempColor = self.firstButton.backgroundColor!
+//                    sender.backgroundColor = UIColor.black //switch colors
+                    sender.frame = CGRect(x: self.xConst + self.screenWidth, y: sender.frame.origin.y, width: self.widthConst, height: self.heightConst)
+                } else {
+                    tempColor = sender.backgroundColor!
+//                    self.firstButton.backgroundColor = UIColor.black //switch colors
+                    self.firstButton.frame = CGRect(x: self.xConst + self.screenWidth, y: self.firstButton.frame.origin.y, width: self.widthConst, height: self.heightConst)
+                }
+                
+                for (_, element) in self.allButtons.enumerated() {
+                    if element.backgroundColor == tempColor {
+                        colorButtons.append(element)
+                        
+                        element.backgroundColor = UIColor.black //switch colors
+                        element.frame = CGRect(x: self.xConst + self.screenWidth, y: element.frame.origin.y, width: self.widthConst, height: self.heightConst)
+                        
+                        let newScore = Int(self.scoreText.text!)! + 1
+                        self.scoreText.text = String(newScore)
+                    }
+                }
+            }
+            firstButton.removeFromSuperview()
+            colorButtons = colorButtons.filter {$0 != firstButton}
+            allButtons = allButtons.filter {$0 != firstButton}
+            
+            sender.removeFromSuperview()
+            colorButtons = colorButtons.filter {$0 != sender}
+            allButtons = allButtons.filter {$0 != sender}
+            
+            for index in 0...colorButtons.count-1 {
+                colorButtons[index].removeFromSuperview()
+                allButtons = allButtons.filter {$0 != colorButtons[index]}
+            }
+            
+            isHighLighted = false //reset
+            checkPattern()
             break
         case "⏸":
             //TODO: pause for 5 sec
@@ -399,57 +444,9 @@ class ViewController: UIViewController {
             print("SOMETHING WENT WRONG IN SWITCHING AGAIN")
             return //something went wrong
         }
+    
         
         
-            } else { //delete all tiles of color sender
-                let width = firstButton.frame.size.width
-                let height = firstButton.frame.size.height
-                let x = firstButton.frame.origin.x
-                
-                var colorButtons = [UIButton] ()
-                
-                UIButton.animate(withDuration: 0.75) {
-                    var tempColor: CGColor
-                    self.firstButton.layer.shadowOpacity = 0.0 //shadow
-                    if self.firstButton.backgroundColor == UIColor.white {
-                        tempColor = sender.backgroundColor!.cgColor
-                        self.firstButton.backgroundColor = UIColor.black //switch colors
-                        self.firstButton.frame = CGRect(x: x + self.screenWidth, y: self.firstButton.frame.origin.y, width: width, height: height)
-                    } else {
-                        tempColor = self.firstButton.backgroundColor!.cgColor
-                        sender.backgroundColor = UIColor.black //switch colors
-                        sender.frame = CGRect(x: x + self.screenWidth, y: sender.frame.origin.y, width: width, height: height)
-                    }
-                    
-                    for (_, element) in self.allButtons.enumerated() {
-                        if element.backgroundColor?.cgColor == tempColor {
-                            colorButtons.append(element)
-                            
-                            element.backgroundColor = UIColor.black //switch colors
-                            element.frame = CGRect(x: x + self.screenWidth, y: element.frame.origin.y, width: width, height: height)
-                            
-                            let newScore = Int(self.scoreText.text!)! + 1
-                            self.scoreText.text = String(newScore)
-                        }
-                    }
-                }
-                firstButton.removeFromSuperview()
-                colorButtons = colorButtons.filter {$0 != firstButton}
-                allButtons = allButtons.filter {$0 != firstButton}
-                
-                sender.removeFromSuperview()
-                colorButtons = colorButtons.filter {$0 != sender}
-                allButtons = allButtons.filter {$0 != sender}
-                
-                for index in 0...colorButtons.count-1 {
-                    colorButtons[index].removeFromSuperview()
-                    allButtons = allButtons.filter {$0 != colorButtons[index]}
-                }
-                
-                isHighLighted = false //reset
-                checkPattern()
-            }
-        }
     }
     
     func normalSwitch(sender: UIButton!) {
