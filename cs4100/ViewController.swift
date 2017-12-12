@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SpriteKit
 
 class ViewController: UIViewController {
     
@@ -24,6 +25,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var gameOverMessage: UILabel!
     @IBOutlet weak var scoreText: UILabel!
     @IBOutlet weak var highScoreText: UILabel!
+    @IBOutlet weak var pauseButton: UIButton!
     
     var isHighLighted:Bool = false
     var firstColor: UIColor!
@@ -40,6 +42,7 @@ class ViewController: UIViewController {
     var patternFound:Bool = false
     var inPause = false
     var moving = false
+    var pausingGame = false
     
     //Screen Sizes and Constants
     let screenSize = UIScreen.main.bounds
@@ -58,6 +61,10 @@ class ViewController: UIViewController {
     let userDefults = UserDefaults.standard //returns shared defaults object
     
     var label: UILabel!
+    
+    let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.dark)
+    var blurEffectView: UIVisualEffectView!
+    var resumeButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -108,13 +115,30 @@ class ViewController: UIViewController {
         heightConst = (screenHeight/20) - 5
         widthConst = (screenWidth/2) - (screenWidth * 0.05)
         
+        
+        //set attributes of buttons
         gameOverLabel.layer.borderColor = UIColor.black.cgColor
         gameOverLabel.layer.borderWidth = 3.0;
+        
+        blurEffectView = UIVisualEffectView(effect: blurEffect)
+        blurEffectView.frame = view.bounds
+        blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        
+        resumeButton = UIButton(frame: CGRect(x: 20, y: 20, width: screenWidth, height: screenHeight))
+        resumeButton.center = self.view.center
+        resumeButton.titleLabel?.font =  UIFont(name: "HelveticaNeue-Bold" , size: 35)
+//        resumeButton.backgroundColor = UIColor.gray
+        resumeButton.addTarget(self, action: #selector(pauseGame), for: .touchUpInside)
+        resumeButton.setTitle("RESUME", for: .normal)
         
         gameTimer = Timer.scheduledTimer(timeInterval: speed, target: self, selector: #selector(addBlock), userInfo: nil, repeats: true)
         
         updatePattern()
         
+    }
+    
+    override var prefersStatusBarHidden: Bool {
+        return true
     }
     
     func updatePattern() {
@@ -745,5 +769,24 @@ class ViewController: UIViewController {
         let viewController = storyboard?.instantiateViewController(withIdentifier: "MainViewController") as! MainViewController
         self.present(viewController, animated:false, completion:nil)
     }
+    
+    @IBAction func pauseGame() {
+        if !pausingGame {
+            gameTimer.invalidate()
+            pauseButton.setTitle("PLAY", for: .normal)
+            pausingGame = true
+        
+            view.addSubview(blurEffectView)
+            view.addSubview(resumeButton)
+
+        } else {
+            blurEffectView.removeFromSuperview()
+            resumeButton.removeFromSuperview()
+            gameTimer = Timer.scheduledTimer(timeInterval: speed, target: self, selector: #selector(self.addBlock), userInfo: nil, repeats: true)
+            pauseButton.setTitle("PAUSE", for: .normal)
+            pausingGame = false
+        }
+    }
+    
 }
 
