@@ -72,9 +72,28 @@ class ViewController: UIViewController {
         if (level) == nil {
             level = 1
         }
-        print("LEVEL: \(level)")
-        if let highScore = userDefults.value(forKey: "highScore") { //check if highscore has been stored
-            highScoreText.text = String(describing: highScore)
+
+        //check if highscore has been stored
+        switch level {
+        case 1:
+            if let highScoreEasy = userDefults.value(forKey: "highScoreEasy") {
+                highScoreText.text = String(describing: highScoreEasy)
+            }
+            break
+        case 2:
+            if let highScoreMedium = userDefults.value(forKey: "highScoreMedium") {
+                highScoreText.text = String(describing: highScoreMedium)
+            }
+            break
+        case 3:
+            if let highScoreHard = userDefults.value(forKey: "highScoreHard") {
+                highScoreText.text = String(describing: highScoreHard)
+            }
+            break
+        default: //default to level one
+            if let highScoreEasy = userDefults.value(forKey: "highScoreEasy") {
+                highScoreText.text = String(describing: highScoreEasy)
+            }
         }
         
         let date = NSDate()
@@ -127,7 +146,6 @@ class ViewController: UIViewController {
         resumeButton = UIButton(frame: CGRect(x: 20, y: 20, width: screenWidth, height: screenHeight))
         resumeButton.center = self.view.center
         resumeButton.titleLabel?.font =  UIFont(name: "HelveticaNeue-Bold" , size: 35)
-//        resumeButton.backgroundColor = UIColor.gray
         resumeButton.addTarget(self, action: #selector(pauseGame), for: .touchUpInside)
         resumeButton.setTitle("RESUME", for: .normal)
         
@@ -736,9 +754,27 @@ class ViewController: UIViewController {
         }
         
         if Int(highScoreText.text!)! < Int(scoreText.text!)! {
-            highScoreText.text = scoreText.text
-            userDefults.set(highScoreText.text, forKey: "highScore")
-            gameOverMessage.isHidden = false
+            switch level {
+            case 1:
+                highScoreText.text = scoreText.text
+                userDefults.set(highScoreText.text, forKey: "highScoreEasy")
+                gameOverMessage.isHidden = false
+                break
+            case 2:
+                highScoreText.text = scoreText.text
+                userDefults.set(highScoreText.text, forKey: "highScoreMedium")
+                gameOverMessage.isHidden = false
+                break
+            case 3:
+                highScoreText.text = scoreText.text
+                userDefults.set(highScoreText.text, forKey: "highScoreHard")
+                gameOverMessage.isHidden = false
+                break
+            default:
+                highScoreText.text = scoreText.text
+                userDefults.set(highScoreText.text, forKey: "highScoreEasy")
+                gameOverMessage.isHidden = false
+            }
         }
     }
     
