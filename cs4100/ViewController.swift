@@ -146,7 +146,7 @@ class ViewController: UIViewController {
         } else {
             button.setTitle(tempText, for: .normal)
         }
-
+        
         button.addTarget(self, action: #selector(clickButton), for: .touchUpInside)
         
         allButtons.insert(button, at: 0)
@@ -313,9 +313,6 @@ class ViewController: UIViewController {
     }
     
     func moveButtonsDown() {
-        if moving {
-            
-        }
         let height = (screenHeight/20)
         for index in 0...allButtons.count-1 {
             let y = height * CGFloat(index)
@@ -336,39 +333,14 @@ class ViewController: UIViewController {
     @IBAction func clickButton(sender: UIButton!) {
         if (sender.titleLabel?.text) != nil { //checking if pause button or bomb are clicked
             if (sender.titleLabel!.text)![((sender.titleLabel!.text)!.startIndex)] == "⏸" { //pause for five seconds
-                inPause = true
-                UIButton.animate(withDuration: 0.75) { //eliminate pause tile
-                    sender.backgroundColor = UIColor.black //switch colors
-                    sender.frame = CGRect(x: self.xConst + self.screenWidth, y: sender.frame.origin.y, width: self.widthConst, height: self.heightConst)
-                }
-                
-                sender.removeFromSuperview()
-                allButtons = allButtons.filter {$0 != sender}
-                moveButtonsDown()
-                
-                if isHighLighted { //unclick button
-                    UIButton.animate(withDuration: 0.05) { //move button back to regular x position
-                        sender.frame = CGRect(x: self.xConst, y: sender.frame.origin.y, width: self.widthConst, height: self.heightConst)
-                    }
-                    isHighLighted = false
-                }
-                gameTimer.invalidate() //stop timer
-                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(5), execute: { //pausing timer
-                    self.gameTimer = Timer.scheduledTimer(timeInterval: self.speed, target: self, selector: #selector(self.addBlock), userInfo: nil, repeats: true)
-                    self.inPause = false
-                })
+                pauseClicked(sender: sender)
                 return
             } else if (sender.titleLabel!.text)![((sender.titleLabel!.text)!.startIndex)] == "💣" { //explode two tiles +-
-            
-                if isHighLighted { //unclick button
-                    UIButton.animate(withDuration: 0.05) { //move button back to regular x position
-                        sender.frame = CGRect(x: self.xConst, y: sender.frame.origin.y, width: self.widthConst, height: self.heightConst)
-                    }
-                    isHighLighted = false
-                }
+                bombClicked(sender: sender)
                 return
             }
         }
+        
         if isHighLighted == false { //first button hasn't been clicked
             UIButton.animate(withDuration: 0.05) { //move button to right to show clicked
                 sender.frame = CGRect(x: self.xConst + 5, y: sender.frame.origin.y, width: self.widthConst, height: self.heightConst)
@@ -382,10 +354,66 @@ class ViewController: UIViewController {
         }
     }
     
+    func bombClicked(sender: UIButton) {
+        var deleteButtons = [UIButton] ()
+        let index = allButtons.index(of: sender)!
+        for i in index-2...index+2 {
+            if i < 0 || i > allButtons.count-1 {
+                
+            } else {
+                deleteButtons.append(allButtons[i])
+            }
+        }
+    
+        UIButton.animate(withDuration: 0.75) { //eliminate bomb tile and radius of 2 tiles
+            for (_, element) in deleteButtons.enumerated() {
+                element.backgroundColor = UIColor.black //switch colors
+                element.frame = CGRect(x: self.xConst + self.screenWidth, y: element.frame.origin.y, width: self.widthConst, height: self.heightConst)
+            }
+        }
+        
+        for (_, element) in deleteButtons.enumerated() {
+            element.removeFromSuperview()
+            allButtons = allButtons.filter {$0 != element}
+        }
+        
+        moveButtonsDown()
+        
+        if isHighLighted { //unclick button
+            UIButton.animate(withDuration: 0.05) { //move button back to regular x position
+                sender.frame = CGRect(x: self.xConst, y: sender.frame.origin.y, width: self.widthConst, height: self.heightConst)
+            }
+            isHighLighted = false
+        }
+    }
+    
+    func pauseClicked(sender: UIButton) {
+        inPause = true
+        UIButton.animate(withDuration: 0.75) { //eliminate pause tile
+            sender.backgroundColor = UIColor.black //switch colors
+            sender.frame = CGRect(x: self.xConst + self.screenWidth, y: sender.frame.origin.y, width: self.widthConst, height: self.heightConst)
+        }
+        
+        sender.removeFromSuperview()
+        allButtons = allButtons.filter {$0 != sender}
+        moveButtonsDown()
+        
+        if isHighLighted { //unclick button
+            UIButton.animate(withDuration: 0.05) { //move button back to regular x position
+                sender.frame = CGRect(x: self.xConst, y: sender.frame.origin.y, width: self.widthConst, height: self.heightConst)
+            }
+            isHighLighted = false
+        }
+        gameTimer.invalidate() //stop timer
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(5), execute: { //pausing timer
+            self.gameTimer = Timer.scheduledTimer(timeInterval: self.speed, target: self, selector: #selector(self.addBlock), userInfo: nil, repeats: true)
+            self.inPause = false
+        })
+    }
+    
     func handleSwitch(sender: UIButton!) {
         var emoji = ""
         var senderBool = false
-        var firstBool = false
         if (sender.titleLabel?.text) == nil && (firstButton.titleLabel?.text) == nil {
             normalSwitch(sender: sender)
             return
@@ -394,12 +422,11 @@ class ViewController: UIViewController {
             senderBool = true
         } else if (firstButton.titleLabel?.text) != nil {
             emoji = (firstButton.titleLabel?.text)!
-            firstBool = true
         } else {
             print("SOMETHING WENT WRONG IN SWITCHING")
             return //something went wrong
         }
-
+        
         switch emoji[emoji.startIndex] {
         case "🗡": // delete both tiles
             UIButton.animate(withDuration: 0.75) {
@@ -464,19 +491,6 @@ class ViewController: UIViewController {
             
             isHighLighted = false //reset
             checkPattern()
-            break
-//        case "⏸": //pause for
-//            gameTimer.invalidate() //stop timer
-//            UIButton.animate(withDuration: 0.75) {
-//
-//
-//            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(5), execute: {
-//                self.gameTimer = Timer.scheduledTimer(timeInterval: self.speed, target: self, selector: #selector(self.addBlock), userInfo: nil, repeats: true)
-//            })
-//
-//            break
-        case "💣":
-            //TODO: explode +=3 tiles
             break
         default:
             print("SOMETHING WENT WRONG IN SWITCHING AGAIN")
@@ -564,9 +578,6 @@ class ViewController: UIViewController {
     }
     
     func checkPattern() {
-//        if patternFound {
-//            return
-//        }
         switch level {
         case 1:
             if allButtons.count > 3 {
@@ -620,7 +631,7 @@ class ViewController: UIViewController {
         //        print("INDEX: \(index)")
         let newScore = Int(scoreText.text!)! + 1
         scoreText.text = String(newScore)
-//        gameTimer.invalidate()
+        //        gameTimer.invalidate()
         patternFound = true
         if level == 1 {
             let temp1 = allButtons[index]
@@ -646,15 +657,11 @@ class ViewController: UIViewController {
                     self.allButtons = self.allButtons.filter {$0 != temp2}
                     self.allButtons = self.allButtons.filter {$0 != temp3}
                     
-//                    self.allButtons.remove(at: index)
-//                    self.allButtons.remove(at: index)
-//                    self.allButtons.remove(at: index)
-                    
-//                    self.moveButtonsUp(i: index)
+                    //                    self.moveButtonsUp(i: index)
                     self.moveButtonsDown()
                     self.patternFound = false
                     
-//                    self.gameTimer = Timer.scheduledTimer(timeInterval: self.speed, target: self, selector: #selector(self.addBlock), userInfo: nil, repeats: true)
+                    //                    self.gameTimer = Timer.scheduledTimer(timeInterval: self.speed, target: self, selector: #selector(self.addBlock), userInfo: nil, repeats: true)
                 }
             })
         }
@@ -683,7 +690,7 @@ class ViewController: UIViewController {
             if let btn = view as? UIButton {
                 if btn.titleLabel?.text != "pattern" {
                     allButtons.append(btn)
-                                        btn.setTitle("Number \(count)", for: .normal)
+                    btn.setTitle("Number \(count)", for: .normal)
                     count = count + 1
                 }
             }
