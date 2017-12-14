@@ -598,7 +598,7 @@ class ViewController: UIViewController {
                 return Int(arc4random_uniform(UInt32(3)))
             }
         } else if level == 2 { //four colors
-            if allButtons.count > 9 { //check if at least there is one of each color half way down
+            if allButtons.count > 8 { //check if at least there is one of each color half way - 1 tiles down
                 var first = false
                 var second = false
                 var third = false
@@ -637,7 +637,7 @@ class ViewController: UIViewController {
                 return Int(arc4random_uniform(UInt32(4)))
             }
         } else { //five colors
-            if allButtons.count > 9 { //check if at least there is one of each color half way down
+            if allButtons.count > 7 { //check if at least there is one of each color half way - 2 tiles down
                 var first = false
                 var second = false
                 var third = false
