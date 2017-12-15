@@ -7,10 +7,10 @@ Tile Breaker is an iOS game for the iPhone. When playing, there will be a patter
 
 ### Power-up Tiles:
 There are four different power-up tiles that can occur within each game. 
-The 💣 (bomb tile) eliminates the tiles two above and two below the bomb. 
-The 💥 (target tile) eliminates all tiles of the chosen color. 
-The 🗡 (knife tile) eliminates the chosen tile. 
-The ⏸ (pause tile) pauses all tiles from falling for five seconds. 
+* The 💣 (bomb tile) eliminates the tiles two above and two below the bomb. 
+* The 💥 (target tile) eliminates all tiles of the chosen color. 
+* The 🗡 (knife tile) eliminates the chosen tile. 
+* The ⏸ (pause tile) pauses all tiles from falling for five seconds. 
 
 ### Master branch build status: 
 
