@@ -204,7 +204,9 @@ class ViewController: UIViewController {
         if allButtons.count > 15 {
             checkHelp()
         } else if isSuggesting {
-            buttonOneSuggestion.layer.removeAllAnimations()
+            if (buttonOneSuggestion != nil) {
+                buttonOneSuggestion.layer.removeAllAnimations()
+            }
             if (buttonTwoSuggestion != nil) {
                 buttonTwoSuggestion.layer.removeAllAnimations()
             }
@@ -223,8 +225,8 @@ class ViewController: UIViewController {
             if (element.titleLabel?.text) != nil {
                 switch (element.titleLabel!.text)![((element.titleLabel!.text)!.startIndex)] {
                 case "⏸": //always choose pause over all tiles
-                    element.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
-                    UIView.animate(withDuration: 2.0, delay: 0, usingSpringWithDamping: 0.2, initialSpringVelocity: 6.0,
+                    element.transform = CGAffineTransform(scaleX: 0.7, y: 0.7)
+                    UIView.animate(withDuration: 2.0, delay: 0, usingSpringWithDamping: 0.2, initialSpringVelocity: 1.0,
                                    options: .allowUserInteraction, animations: { [] in
                                     element.transform = .identity
                     }, completion: nil)
@@ -253,8 +255,8 @@ class ViewController: UIViewController {
             }
         }
         if bomb {
-            allButtons[i].transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
-            UIView.animate(withDuration: 2.0, delay: 0, usingSpringWithDamping: 0.2, initialSpringVelocity: 6.0,
+            allButtons[i].transform = CGAffineTransform(scaleX: 0.7, y: 0.7)
+            UIView.animate(withDuration: 2.0, delay: 0, usingSpringWithDamping: 0.2, initialSpringVelocity: 1.0,
                            options: .allowUserInteraction, animations: { [] in
                             self.allButtons[i].transform = .identity
             }, completion: nil)
@@ -287,26 +289,26 @@ class ViewController: UIViewController {
             } else {
                 finalIndex = index3
             }
-            allButtons[finalIndex].transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
-            UIView.animate(withDuration: 2.0, delay: 0, usingSpringWithDamping: 0.2, initialSpringVelocity: 6.0,
+            allButtons[finalIndex].transform = CGAffineTransform(scaleX: 0.7, y: 0.7)
+            UIView.animate(withDuration: 2.0, delay: 0, usingSpringWithDamping: 0.2, initialSpringVelocity: 1.0,
                            options: .allowUserInteraction, animations: { [] in
                             self.allButtons[finalIndex].transform = .identity
             }, completion: nil)
-            allButtons[i].transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
-            UIView.animate(withDuration: 2.0, delay: 0, usingSpringWithDamping: 0.2, initialSpringVelocity: 6.0,
+            allButtons[i].transform = CGAffineTransform(scaleX: 0.7, y: 0.7)
+            UIView.animate(withDuration: 2.0, delay: 0, usingSpringWithDamping: 0.2, initialSpringVelocity: 1.0,
                            options: .allowUserInteraction, animations: { [] in
                             self.allButtons[i].transform = .identity
             }, completion: nil)
             buttonOneSuggestion = allButtons[i]
             buttonTwoSuggestion = allButtons[finalIndex]
         } else if knife {
-            allButtons[allButtons.count-1].transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
-            UIView.animate(withDuration: 2.0, delay: 0, usingSpringWithDamping: 0.2, initialSpringVelocity: 6.0,
+            allButtons[allButtons.count-1].transform = CGAffineTransform(scaleX: 0.7, y: 0.7)
+            UIView.animate(withDuration: 2.0, delay: 0, usingSpringWithDamping: 0.2, initialSpringVelocity: 1.0,
                            options: .allowUserInteraction, animations: { [] in
                             self.allButtons[self.allButtons.count-1].transform = .identity
             }, completion: nil)
-            allButtons[i].transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
-            UIView.animate(withDuration: 2.0, delay: 0, usingSpringWithDamping: 0.2, initialSpringVelocity: 6.0,
+            allButtons[i].transform = CGAffineTransform(scaleX: 0.7, y: 0.7)
+            UIView.animate(withDuration: 2.0, delay: 0, usingSpringWithDamping: 0.2, initialSpringVelocity: 1.0,
                            options: .allowUserInteraction, animations: { [] in
                             self.allButtons[i].transform = .identity
             }, completion: nil)
