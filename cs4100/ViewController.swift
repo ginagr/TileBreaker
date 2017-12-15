@@ -66,13 +66,18 @@ class ViewController: UIViewController {
     var blurEffectView: UIVisualEffectView!
     var resumeButton: UIButton!
     
+    //suggested buttons
+    var buttonOneSuggestion: UIButton!
+    var buttonTwoSuggestion: UIButton!
+    var isSuggesting = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         if (level) == nil {
             level = 1
         }
-
+        
         //check if highscore has been stored
         switch level {
         case 1:
@@ -195,6 +200,121 @@ class ViewController: UIViewController {
         self.view.addSubview(button)
         
         moveButtonsDown()
+        
+        if allButtons.count > 15 {
+            checkHelp()
+        } else if isSuggesting {
+            buttonOneSuggestion.layer.removeAllAnimations()
+            if (buttonTwoSuggestion != nil) {
+                buttonTwoSuggestion.layer.removeAllAnimations()
+            }
+            isSuggesting = false
+        }
+    }
+    
+    //highlights two suggested switches when the player is close to losing
+    func checkHelp() {
+        isSuggesting = true
+        var bomb = false
+        var target = false
+        var knife = false
+        var i = 0
+        for (index, element) in allButtons.enumerated() {
+            if (element.titleLabel?.text) != nil {
+                switch (element.titleLabel!.text)![((element.titleLabel!.text)!.startIndex)] {
+                case "⏸": //always choose pause over all tiles
+                    element.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
+                    UIView.animate(withDuration: 2.0, delay: 0, usingSpringWithDamping: 0.2, initialSpringVelocity: 6.0,
+                                   options: .allowUserInteraction, animations: { [] in
+                                    element.transform = .identity
+                    }, completion: nil)
+                    buttonOneSuggestion = element
+                    buttonTwoSuggestion = nil
+                    return
+                case "💣":
+                    bomb = true
+                    i = index
+                    break
+                case "💥":
+                    target = true
+                    if !bomb {
+                        i = index
+                    }
+                    break
+                case "🗡":
+                    knife = true
+                    if !bomb && !target{
+                        i = index
+                    }
+                    break
+                default:
+                    break
+                }
+            }
+        }
+        if bomb {
+            allButtons[i].transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
+            UIView.animate(withDuration: 2.0, delay: 0, usingSpringWithDamping: 0.2, initialSpringVelocity: 6.0,
+                           options: .allowUserInteraction, animations: { [] in
+                            self.allButtons[i].transform = .identity
+            }, completion: nil)
+            buttonOneSuggestion = allButtons[i]
+            buttonTwoSuggestion = nil
+        } else if target {
+            var color1 = 0
+            var color2 = 0
+            var color3 = 0
+            var index1 = 0
+            var index2 = 0
+            var index3 = 0
+            for (index, element) in allButtons.enumerated() {
+                if element.backgroundColor == patternButtons[0].backgroundColor {
+                    color1 = color1 + 1
+                    index1 = index
+                } else if element.backgroundColor == patternButtons[1].backgroundColor {
+                    color2 = color2 + 1
+                    index2 = index
+                } else if element.backgroundColor == patternButtons[2].backgroundColor {
+                    color3 = color3 + 1
+                    index3 = index
+                }
+            }
+            var finalIndex = 0
+            if color1 > color2 && color1 > color3 {
+                finalIndex = index1
+            } else if color2 > color1 && color2 > color3 {
+                finalIndex = index2
+            } else {
+                finalIndex = index3
+            }
+            allButtons[finalIndex].transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
+            UIView.animate(withDuration: 2.0, delay: 0, usingSpringWithDamping: 0.2, initialSpringVelocity: 6.0,
+                           options: .allowUserInteraction, animations: { [] in
+                            self.allButtons[finalIndex].transform = .identity
+            }, completion: nil)
+            allButtons[i].transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
+            UIView.animate(withDuration: 2.0, delay: 0, usingSpringWithDamping: 0.2, initialSpringVelocity: 6.0,
+                           options: .allowUserInteraction, animations: { [] in
+                            self.allButtons[i].transform = .identity
+            }, completion: nil)
+            buttonOneSuggestion = allButtons[i]
+            buttonTwoSuggestion = allButtons[finalIndex]
+        } else if knife {
+            allButtons[allButtons.count-1].transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
+            UIView.animate(withDuration: 2.0, delay: 0, usingSpringWithDamping: 0.2, initialSpringVelocity: 6.0,
+                           options: .allowUserInteraction, animations: { [] in
+                            self.allButtons[self.allButtons.count-1].transform = .identity
+            }, completion: nil)
+            allButtons[i].transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
+            UIView.animate(withDuration: 2.0, delay: 0, usingSpringWithDamping: 0.2, initialSpringVelocity: 6.0,
+                           options: .allowUserInteraction, animations: { [] in
+                            self.allButtons[i].transform = .identity
+            }, completion: nil)
+            buttonOneSuggestion = allButtons[i]
+            buttonTwoSuggestion = allButtons[allButtons.count-1]
+            
+        }
+        
     }
     
     func checkTime() {
@@ -406,7 +526,7 @@ class ViewController: UIViewController {
                 deleteButtons.append(allButtons[i])
             }
         }
-    
+        
         UIButton.animate(withDuration: 0.75) { //eliminate bomb tile and radius of 2 tiles
             for (_, element) in deleteButtons.enumerated() {
                 element.backgroundColor = UIColor.black //switch colors
@@ -865,7 +985,7 @@ class ViewController: UIViewController {
             })
         }
     }
-   
+    
     func gameOver() { //tiles have reached bottom of screen
         gameTimer.invalidate() //stop timer
         view.bringSubview(toFront: gameOverLabel)
@@ -937,10 +1057,10 @@ class ViewController: UIViewController {
             gameTimer.invalidate()
             pauseButton.setTitle("PLAY", for: .normal)
             pausingGame = true
-        
+            
             view.addSubview(blurEffectView)
             view.addSubview(resumeButton)
-
+            
         } else {
             blurEffectView.removeFromSuperview()
             resumeButton.removeFromSuperview()
