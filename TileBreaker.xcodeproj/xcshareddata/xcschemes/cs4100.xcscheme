@@ -17,7 +17,7 @@
                BlueprintIdentifier = "33329DD11FB0C335002004D4"
                BuildableName = "cs4100.app"
                BlueprintName = "cs4100"
-               ReferencedContainer = "container:cs4100.xcodeproj">
+               ReferencedContainer = "container:TileBreaker.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -36,7 +36,7 @@
             BlueprintIdentifier = "33329DD11FB0C335002004D4"
             BuildableName = "cs4100.app"
             BlueprintName = "cs4100"
-            ReferencedContainer = "container:cs4100.xcodeproj">
+            ReferencedContainer = "container:TileBreaker.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -60,7 +60,7 @@
             BlueprintIdentifier = "33329DD11FB0C335002004D4"
             BuildableName = "cs4100.app"
             BlueprintName = "cs4100"
-            ReferencedContainer = "container:cs4100.xcodeproj">
+            ReferencedContainer = "container:TileBreaker.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -79,7 +79,7 @@
             BlueprintIdentifier = "33329DD11FB0C335002004D4"
             BuildableName = "cs4100.app"
             BlueprintName = "cs4100"
-            ReferencedContainer = "container:cs4100.xcodeproj">
+            ReferencedContainer = "container:TileBreaker.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

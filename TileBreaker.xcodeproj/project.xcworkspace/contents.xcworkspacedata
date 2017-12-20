@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:cs4100.xcodeproj">
+      location = "self:/Users/Gina/Desktop/Desktop/WPI/cs4100/procjam/cs4100/TileBreaker.xcodeproj">
    </FileRef>
 </Workspace>

@@ -226,7 +226,7 @@ class ViewController: UIViewController {
                 switch (element.titleLabel!.text)![((element.titleLabel!.text)!.startIndex)] {
                 case "⏸": //always choose pause over all tiles
                     element.transform = CGAffineTransform(scaleX: 0.7, y: 0.7)
-                    UIView.animate(withDuration: 2.0, delay: 0, usingSpringWithDamping: 0.2, initialSpringVelocity: 1.0,
+                    UIView.animate(withDuration: speed, delay: 0, usingSpringWithDamping: 0.2, initialSpringVelocity: 1.0,
                                    options: .allowUserInteraction, animations: { [] in
                                     element.transform = .identity
                     }, completion: nil)
@@ -256,7 +256,7 @@ class ViewController: UIViewController {
         }
         if bomb {
             allButtons[i].transform = CGAffineTransform(scaleX: 0.7, y: 0.7)
-            UIView.animate(withDuration: 2.0, delay: 0, usingSpringWithDamping: 0.2, initialSpringVelocity: 1.0,
+            UIView.animate(withDuration: speed, delay: 0, usingSpringWithDamping: 0.2, initialSpringVelocity: 1.0,
                            options: .allowUserInteraction, animations: { [] in
                             self.allButtons[i].transform = .identity
             }, completion: nil)
@@ -290,12 +290,12 @@ class ViewController: UIViewController {
                 finalIndex = index3
             }
             allButtons[finalIndex].transform = CGAffineTransform(scaleX: 0.7, y: 0.7)
-            UIView.animate(withDuration: 2.0, delay: 0, usingSpringWithDamping: 0.2, initialSpringVelocity: 1.0,
+            UIView.animate(withDuration: speed, delay: 0, usingSpringWithDamping: 0.2, initialSpringVelocity: 1.0,
                            options: .allowUserInteraction, animations: { [] in
                             self.allButtons[finalIndex].transform = .identity
             }, completion: nil)
             allButtons[i].transform = CGAffineTransform(scaleX: 0.7, y: 0.7)
-            UIView.animate(withDuration: 2.0, delay: 0, usingSpringWithDamping: 0.2, initialSpringVelocity: 1.0,
+            UIView.animate(withDuration: speed, delay: 0, usingSpringWithDamping: 0.2, initialSpringVelocity: 1.0,
                            options: .allowUserInteraction, animations: { [] in
                             self.allButtons[i].transform = .identity
             }, completion: nil)
@@ -303,12 +303,12 @@ class ViewController: UIViewController {
             buttonTwoSuggestion = allButtons[finalIndex]
         } else if knife {
             allButtons[allButtons.count-1].transform = CGAffineTransform(scaleX: 0.7, y: 0.7)
-            UIView.animate(withDuration: 2.0, delay: 0, usingSpringWithDamping: 0.2, initialSpringVelocity: 1.0,
+            UIView.animate(withDuration: speed, delay: 0, usingSpringWithDamping: 0.2, initialSpringVelocity: 1.0,
                            options: .allowUserInteraction, animations: { [] in
                             self.allButtons[self.allButtons.count-1].transform = .identity
             }, completion: nil)
             allButtons[i].transform = CGAffineTransform(scaleX: 0.7, y: 0.7)
-            UIView.animate(withDuration: 2.0, delay: 0, usingSpringWithDamping: 0.2, initialSpringVelocity: 1.0,
+            UIView.animate(withDuration: speed, delay: 0, usingSpringWithDamping: 0.2, initialSpringVelocity: 1.0,
                            options: .allowUserInteraction, animations: { [] in
                             self.allButtons[i].transform = .identity
             }, completion: nil)
@@ -484,6 +484,9 @@ class ViewController: UIViewController {
             UIView.animate(withDuration: 0.1, animations:{
                 self.allButtons[index].frame = CGRect(x: x, y: y, width: self.widthConst, height: self.heightConst)
             })
+//            UIView.animate(withDuration: (speed+0.1), animations:{
+//                self.allButtons[index].frame = CGRect(x: x, y: y, width: self.widthConst, height: self.heightConst)
+//            })
         }
         if (allButtons[allButtons.count-1].frame.origin.y) > (screenHeight - height - 1) {
             gameOver()
