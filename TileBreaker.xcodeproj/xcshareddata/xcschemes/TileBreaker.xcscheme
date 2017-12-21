@@ -15,8 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "33329DD11FB0C335002004D4"
-               BuildableName = "cs4100.app"
-               BlueprintName = "cs4100"
+               BuildableName = "TileBreaker.app"
+               BlueprintName = "TileBreaker"
                ReferencedContainer = "container:TileBreaker.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -34,8 +34,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "33329DD11FB0C335002004D4"
-            BuildableName = "cs4100.app"
-            BlueprintName = "cs4100"
+            BuildableName = "TileBreaker.app"
+            BlueprintName = "TileBreaker"
             ReferencedContainer = "container:TileBreaker.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -58,8 +58,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "33329DD11FB0C335002004D4"
-            BuildableName = "cs4100.app"
-            BlueprintName = "cs4100"
+            BuildableName = "TileBreaker.app"
+            BlueprintName = "TileBreaker"
             ReferencedContainer = "container:TileBreaker.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -77,8 +77,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "33329DD11FB0C335002004D4"
-            BuildableName = "cs4100.app"
-            BlueprintName = "cs4100"
+            BuildableName = "TileBreaker.app"
+            BlueprintName = "TileBreaker"
             ReferencedContainer = "container:TileBreaker.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

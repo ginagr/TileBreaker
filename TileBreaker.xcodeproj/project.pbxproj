@@ -16,7 +16,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		33329DD21FB0C335002004D4 /* cs4100.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = cs4100.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		33329DD21FB0C335002004D4 /* TileBreaker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TileBreaker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		33329DD51FB0C335002004D4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		33329DD71FB0C335002004D4 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		33329DDA1FB0C335002004D4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -40,7 +40,7 @@
 		33329DC91FB0C334002004D4 = {
 			isa = PBXGroup;
 			children = (
-				33329DD41FB0C335002004D4 /* cs4100 */,
+				33329DD41FB0C335002004D4 /* TileBreaker */,
 				33329DD31FB0C335002004D4 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -48,12 +48,12 @@
 		33329DD31FB0C335002004D4 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				33329DD21FB0C335002004D4 /* cs4100.app */,
+				33329DD21FB0C335002004D4 /* TileBreaker.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		33329DD41FB0C335002004D4 /* cs4100 */ = {
+		33329DD41FB0C335002004D4 /* TileBreaker */ = {
 			isa = PBXGroup;
 			children = (
 				33329DD51FB0C335002004D4 /* AppDelegate.swift */,
@@ -64,15 +64,15 @@
 				33329DE11FB0C335002004D4 /* Info.plist */,
 				33BA0AA51FDC797E00786021 /* MainViewController.swift */,
 			);
-			path = cs4100;
+			path = TileBreaker;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		33329DD11FB0C335002004D4 /* cs4100 */ = {
+		33329DD11FB0C335002004D4 /* TileBreaker */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 33329DE41FB0C335002004D4 /* Build configuration list for PBXNativeTarget "cs4100" */;
+			buildConfigurationList = 33329DE41FB0C335002004D4 /* Build configuration list for PBXNativeTarget "TileBreaker" */;
 			buildPhases = (
 				33329DCE1FB0C335002004D4 /* Sources */,
 				33329DCF1FB0C335002004D4 /* Frameworks */,
@@ -82,9 +82,9 @@
 			);
 			dependencies = (
 			);
-			name = cs4100;
+			name = TileBreaker;
 			productName = cs4100;
-			productReference = 33329DD21FB0C335002004D4 /* cs4100.app */;
+			productReference = 33329DD21FB0C335002004D4 /* TileBreaker.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -116,7 +116,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				33329DD11FB0C335002004D4 /* cs4100 */,
+				33329DD11FB0C335002004D4 /* TileBreaker */,
 			);
 		};
 /* End PBXProject section */
@@ -281,9 +281,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = X933R25UP9;
-				INFOPLIST_FILE = cs4100/Info.plist;
+				INFOPLIST_FILE = TileBreaker/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = ggr.cs4100;
+				PRODUCT_BUNDLE_IDENTIFIER = ggr.TileBreaker;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
@@ -298,9 +298,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = X933R25UP9;
-				INFOPLIST_FILE = cs4100/Info.plist;
+				INFOPLIST_FILE = TileBreaker/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = ggr.cs4100;
+				PRODUCT_BUNDLE_IDENTIFIER = ggr.TileBreaker;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
@@ -321,7 +321,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		33329DE41FB0C335002004D4 /* Build configuration list for PBXNativeTarget "cs4100" */ = {
+		33329DE41FB0C335002004D4 /* Build configuration list for PBXNativeTarget "TileBreaker" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				33329DE51FB0C335002004D4 /* Debug */,
