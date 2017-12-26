@@ -147,11 +147,48 @@ class MovesController: UIViewController {
         resumeButton.setTitle("RESUME", for: .normal)
         
         updatePattern()
+        addStartBlocks()
         
-        for _ in 0...10 {
+    }
+    
+    func addStartBlocks() {
+        var index  = 10
+        switch level {
+        case 2:
+            index = 14
+            break
+        case 3:
+            index = 17
+            break
+        default:
+            index = 10
+            break
+        }
+        for _ in 0...index {
             addBlock()
         }
-        
+    }
+    
+    func addLevelBlocks() {
+        switch level {
+        case 1:
+            addBlock()
+            addBlock()
+            break
+        case 2:
+            addBlock()
+            addBlock()
+            addBlock()
+            break
+        case 3:
+            addBlock()
+            addBlock()
+            addBlock()
+            addBlock()
+            break
+        default:
+            break
+        }
     }
     
     override var prefersStatusBarHidden: Bool {
@@ -178,7 +215,6 @@ class MovesController: UIViewController {
     }
     
     @objc func addBlock() {
-        print("adding block")
         let button = UIButton(frame: CGRect(x: xConst, y: 0, width: widthConst, height: heightConst))
         let tempColor = colorArray[generateRandomColor(level)]
         let tempText = checkGrammar(color: tempColor)
@@ -219,13 +255,6 @@ class MovesController: UIViewController {
             if (element.titleLabel?.text) != nil {
                 switch (element.titleLabel!.text)![((element.titleLabel!.text)!.startIndex)] {
                 case "⏸": //always choose pause over all tiles
-                    element.transform = CGAffineTransform(scaleX: 0.7, y: 0.7)
-                    UIView.animate(withDuration: 2, delay: 0, usingSpringWithDamping: 0.2, initialSpringVelocity: 1.0,
-                                   options: .allowUserInteraction, animations: { [] in
-                                    element.transform = .identity
-                    }, completion: nil)
-                    buttonOneSuggestion = element
-                    buttonTwoSuggestion = nil
                     return
                 case "💣":
                     bomb = true
@@ -445,7 +474,6 @@ class MovesController: UIViewController {
     }
     
     func moveButtonsDown() {
-        print("moving down")
         let height = (screenHeight/20)
         for index in 0...allButtons.count-1 {
             let y = height * CGFloat(index)
@@ -453,9 +481,6 @@ class MovesController: UIViewController {
             UIView.animate(withDuration: 0.1, animations:{
                 self.allButtons[index].frame = CGRect(x: x, y: y, width: self.widthConst, height: self.heightConst)
             })
-            //            UIView.animate(withDuration: (speed+0.1), animations:{
-            //                self.allButtons[index].frame = CGRect(x: x, y: y, width: self.widthConst, height: self.heightConst)
-            //            })
         }
         if (allButtons[allButtons.count-1].frame.origin.y) > (screenHeight - height - 1) {
             gameOver()
@@ -487,8 +512,7 @@ class MovesController: UIViewController {
             firstButton = sender; //save button
         } else {
             handleSwitch(sender: sender)
-            addBlock()
-            addBlock()
+            addLevelBlocks()
         }
     }
     
@@ -1007,16 +1031,13 @@ class MovesController: UIViewController {
         scoreText.text = "0"
         
         allButtons.removeAll()
-        
-        for _ in 0...10 {
-            addBlock()
-        }
+        addStartBlocks()
         
         updatePattern()
     }
     
     @IBAction func backToLevels() {
-        let viewController = storyboard?.instantiateViewController(withIdentifier: "MainViewController") as! MainViewController
+        let viewController = storyboard?.instantiateViewController(withIdentifier: "MovesLevelController") as! MovesLevelController
         self.present(viewController, animated:false, completion:nil)
     }
     

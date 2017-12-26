@@ -9,7 +9,7 @@
 import UIKit
 import SpriteKit
 
-class ViewController: UIViewController {
+class TimedController: UIViewController {
     
     @IBOutlet weak var pattern1: UIButton!
     @IBOutlet weak var pattern2: UIButton!
@@ -1053,7 +1053,7 @@ class ViewController: UIViewController {
         gameTimer = Timer.scheduledTimer(timeInterval: speed, target: self, selector: #selector(self.addBlock), userInfo: nil, repeats: true)
     }
     @IBAction func backToLevels() {
-        let viewController = storyboard?.instantiateViewController(withIdentifier: "MainViewController") as! MainViewController
+        let viewController = storyboard?.instantiateViewController(withIdentifier: "TimedLevelController") as! TimedLevelController
         self.present(viewController, animated:false, completion:nil)
     }
     
