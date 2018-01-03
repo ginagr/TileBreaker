@@ -14,7 +14,6 @@
 		33329DE01FB0C335002004D4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 33329DDE1FB0C335002004D4 /* LaunchScreen.storyboard */; };
 		33BA0AA61FDC797E00786021 /* TimedLevelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33BA0AA51FDC797E00786021 /* TimedLevelController.swift */; };
 		33EBE4E91FF1F9A2001D18AD /* MovesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33EBE4E81FF1F9A2001D18AD /* MovesController.swift */; };
-		33EBE4EB1FF20098001D18AD /* MovesLevelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33EBE4EA1FF20098001D18AD /* MovesLevelController.swift */; };
 		33EBE4ED1FF20E34001D18AD /* MainController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33EBE4EC1FF20E34001D18AD /* MainController.swift */; };
 /* End PBXBuildFile section */
 
@@ -28,7 +27,6 @@
 		33329DE11FB0C335002004D4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		33BA0AA51FDC797E00786021 /* TimedLevelController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimedLevelController.swift; sourceTree = "<group>"; };
 		33EBE4E81FF1F9A2001D18AD /* MovesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovesController.swift; sourceTree = "<group>"; };
-		33EBE4EA1FF20098001D18AD /* MovesLevelController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovesLevelController.swift; sourceTree = "<group>"; };
 		33EBE4EC1FF20E34001D18AD /* MainController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -70,7 +68,6 @@
 				33329DD71FB0C335002004D4 /* TimedController.swift */,
 				33BA0AA51FDC797E00786021 /* TimedLevelController.swift */,
 				33EBE4E81FF1F9A2001D18AD /* MovesController.swift */,
-				33EBE4EA1FF20098001D18AD /* MovesLevelController.swift */,
 				33EBE4EC1FF20E34001D18AD /* MainController.swift */,
 			);
 			path = TileBreaker;
@@ -153,7 +150,6 @@
 				33EBE4E91FF1F9A2001D18AD /* MovesController.swift in Sources */,
 				33329DD61FB0C335002004D4 /* AppDelegate.swift in Sources */,
 				33EBE4ED1FF20E34001D18AD /* MainController.swift in Sources */,
-				33EBE4EB1FF20098001D18AD /* MovesLevelController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

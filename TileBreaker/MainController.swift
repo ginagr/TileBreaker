@@ -18,7 +18,7 @@ class MainController: UIViewController {
     }
     
     @IBAction func movesLevel(_ sender: UIButton) {
-        let viewController = storyboard?.instantiateViewController(withIdentifier: "MovesLevelController") as! MovesLevelController
+        let viewController = storyboard?.instantiateViewController(withIdentifier: "MovesController") as! MovesController
         self.present(viewController, animated:false, completion:nil)
     }
     

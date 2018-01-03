@@ -14,10 +14,7 @@ class MovesController: UIViewController {
     @IBOutlet weak var pattern2: UIButton!
     @IBOutlet weak var pattern3: UIButton!
     @IBOutlet weak var pattern4: UIButton!
-    @IBOutlet weak var pattern5: UIButton!
-    @IBOutlet weak var labelOne: UILabel!
     @IBOutlet weak var labelTwo: UILabel!
-    @IBOutlet weak var labelThree: UILabel!
     @IBOutlet weak var gameOverLabel: UILabel!
     @IBOutlet weak var gameOverButton: UIButton!
     @IBOutlet weak var gameOverText: UITextField!
@@ -32,14 +29,10 @@ class MovesController: UIViewController {
     
     let colorArray = [UIColor(red:0.76, green:0.71, blue:0.93, alpha:1.0), UIColor(red:0.08, green:0.35, blue:0.40, alpha:1.0), UIColor(red:0.60, green:0.15, blue:0.35, alpha:1.0), UIColor(red:0.69, green:0.98, blue:0.97, alpha:1.0), UIColor(red:0.90, green:0.98, blue:0.62, alpha:1.0)]
     
-    let tripleColor = UIColor(red:0.96, green:0.27, blue:0.85, alpha:1.0) //pink
-    let patternColor = UIColor(red:0.52, green:0.97, blue:0.49, alpha:1.0) //green
-    
     var allButtons = [UIButton] ()
     var patternButtons = [UIButton] ()
     
     var patternFound:Bool = false
-    var inPause = false
     var moving = false
     var pausingGame = false
     
@@ -51,7 +44,7 @@ class MovesController: UIViewController {
     var heightConst: CGFloat!
     var widthConst: CGFloat!
     
-    var level: Int!
+    var level = 2
     
     let userDefults = UserDefaults.standard //returns shared defaults object
     
@@ -61,66 +54,23 @@ class MovesController: UIViewController {
     var blurEffectView: UIVisualEffectView!
     var resumeButton: UIButton!
     
-    //suggested buttons
-    var buttonOneSuggestion: UIButton!
-    var buttonTwoSuggestion: UIButton!
-    var isSuggesting = false
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if (level) == nil {
-            level = 1
-        }
+        level = 2
+        label = labelTwo
         
         //check if highscore has been stored
-        switch level {
-        case 1:
-            if let highScoreEasy = userDefults.value(forKey: "highScoreEasy") {
-                highScoreText.text = String(describing: highScoreEasy)
-            }
-            break
-        case 2:
-            if let highScoreMedium = userDefults.value(forKey: "highScoreMedium") {
-                highScoreText.text = String(describing: highScoreMedium)
-            }
-            break
-        case 3:
-            if let highScoreHard = userDefults.value(forKey: "highScoreHard") {
-                highScoreText.text = String(describing: highScoreHard)
-            }
-            break
-        default: //default to level one
-            if let highScoreEasy = userDefults.value(forKey: "highScoreEasy") {
-                highScoreText.text = String(describing: highScoreEasy)
-            }
+        if let highScoreMoves = userDefults.value(forKey: "highScoreMoves") {
+            highScoreText.text = String(describing: highScoreMoves)
         }
         
         //append all pattern buttons to array
         patternButtons.append(pattern1)
         patternButtons.append(pattern2)
         patternButtons.append(pattern3)
-        
-        // hide/unhide level boxes & pattern buttons
-        if level == 1 {
-            label = labelOne
-            labelTwo.isHidden = true
-            labelThree.isHidden = true
-            pattern4.isHidden = true
-            pattern5.isHidden = true
-        } else if level == 2 {
-            label = labelTwo
-            labelOne.isHidden = true
-            labelThree.isHidden = true
-            patternButtons.append(pattern4)
-            pattern5.isHidden = true
-        } else {
-            label = labelThree
-            labelOne.isHidden = true
-            labelTwo.isHidden = true
-            patternButtons.append(pattern4)
-            patternButtons.append(pattern5)
-        }
+        patternButtons.append(pattern4)
+      
         label.layer.borderColor = UIColor.gray.cgColor
         label.layer.borderWidth = 3.0;
         
@@ -152,42 +102,26 @@ class MovesController: UIViewController {
     }
     
     func addStartBlocks() {
-        var index  = 10
-        switch level {
-        case 2:
-            index = 14
-            break
-        case 3:
-            index = 17
-            break
-        default:
-            index = 10
-            break
-        }
-        for _ in 0...index {
+        for _ in 0...14 {
             addBlock()
         }
     }
     
     func addLevelBlocks() {
-        switch level {
-        case 1:
-            addBlock()
-            addBlock()
-            break
-        case 2:
-            addBlock()
-            addBlock()
-            addBlock()
-            break
-        case 3:
-            addBlock()
-            addBlock()
-            addBlock()
-            addBlock()
-            break
-        default:
-            break
+        let when = DispatchTime.now() + 0.5
+        DispatchQueue.main.asyncAfter(deadline: when) {
+            let when2 = DispatchTime.now() + 0.5
+            DispatchQueue.main.asyncAfter(deadline: when2) {
+                self.addBlock()
+                let when3 = DispatchTime.now() + 0.5
+                DispatchQueue.main.asyncAfter(deadline: when3) {
+                    self.addBlock()
+                    let when4 = DispatchTime.now() + 0.5
+                    DispatchQueue.main.asyncAfter(deadline: when4) {
+                        self.addBlock()
+                    }
+                }
+            }
         }
     }
     
@@ -201,7 +135,7 @@ class MovesController: UIViewController {
         }
         
         var pattern = [UIColor] ()
-        pattern = generateRandomPattern(level) //get randomly generated pattern
+        pattern = generateRandomPattern() //get randomly generated pattern
         
         for (index, element) in pattern.enumerated() { //put pattern in pattern buttons
             patternButtons[index].backgroundColor = element
@@ -230,168 +164,17 @@ class MovesController: UIViewController {
         self.view.addSubview(button)
         
         moveButtonsDown()
-        
-        if allButtons.count > 15 {
-            checkHelp()
-        } else if isSuggesting {
-            if (buttonOneSuggestion != nil) {
-                buttonOneSuggestion.layer.removeAllAnimations()
-            }
-            if (buttonTwoSuggestion != nil) {
-                buttonTwoSuggestion.layer.removeAllAnimations()
-            }
-            isSuggesting = false
-        }
     }
-    
-    //highlights two suggested switches when the player is close to losing
-    func checkHelp() {
-        isSuggesting = true
-        var bomb = false
-        var target = false
-        var knife = false
-        var i = 0
-        for (index, element) in allButtons.enumerated() {
-            if (element.titleLabel?.text) != nil {
-                switch (element.titleLabel!.text)![((element.titleLabel!.text)!.startIndex)] {
-                case "⏸": //always choose pause over all tiles
-                    return
-                case "💣":
-                    bomb = true
-                    i = index
-                    break
-                case "💥":
-                    target = true
-                    if !bomb {
-                        i = index
-                    }
-                    break
-                case "🗡":
-                    knife = true
-                    if !bomb && !target{
-                        i = index
-                    }
-                    break
-                default:
-                    break
-                }
-            }
-        }
-        if bomb {
-            allButtons[i].transform = CGAffineTransform(scaleX: 0.7, y: 0.7)
-            UIView.animate(withDuration: 2, delay: 0, usingSpringWithDamping: 0.2, initialSpringVelocity: 1.0,
-                           options: .allowUserInteraction, animations: { [] in
-                            self.allButtons[i].transform = .identity
-            }, completion: nil)
-            buttonOneSuggestion = allButtons[i]
-            buttonTwoSuggestion = nil
-        } else if target {
-            var color1 = 0
-            var color2 = 0
-            var color3 = 0
-            var index1 = 0
-            var index2 = 0
-            var index3 = 0
-            for (index, element) in allButtons.enumerated() {
-                if element.backgroundColor == patternButtons[0].backgroundColor {
-                    color1 = color1 + 1
-                    index1 = index
-                } else if element.backgroundColor == patternButtons[1].backgroundColor {
-                    color2 = color2 + 1
-                    index2 = index
-                } else if element.backgroundColor == patternButtons[2].backgroundColor {
-                    color3 = color3 + 1
-                    index3 = index
-                }
-            }
-            var finalIndex = 0
-            if color1 > color2 && color1 > color3 {
-                finalIndex = index1
-            } else if color2 > color1 && color2 > color3 {
-                finalIndex = index2
-            } else {
-                finalIndex = index3
-            }
-            allButtons[finalIndex].transform = CGAffineTransform(scaleX: 0.7, y: 0.7)
-            UIView.animate(withDuration: 2, delay: 0, usingSpringWithDamping: 0.2, initialSpringVelocity: 1.0,
-                           options: .allowUserInteraction, animations: { [] in
-                            self.allButtons[finalIndex].transform = .identity
-            }, completion: nil)
-            allButtons[i].transform = CGAffineTransform(scaleX: 0.7, y: 0.7)
-            UIView.animate(withDuration: 2, delay: 0, usingSpringWithDamping: 0.2, initialSpringVelocity: 1.0,
-                           options: .allowUserInteraction, animations: { [] in
-                            self.allButtons[i].transform = .identity
-            }, completion: nil)
-            buttonOneSuggestion = allButtons[i]
-            buttonTwoSuggestion = allButtons[finalIndex]
-        } else if knife {
-            allButtons[allButtons.count-1].transform = CGAffineTransform(scaleX: 0.7, y: 0.7)
-            UIView.animate(withDuration: 2, delay: 0, usingSpringWithDamping: 0.2, initialSpringVelocity: 1.0,
-                           options: .allowUserInteraction, animations: { [] in
-                            self.allButtons[self.allButtons.count-1].transform = .identity
-            }, completion: nil)
-            allButtons[i].transform = CGAffineTransform(scaleX: 0.7, y: 0.7)
-            UIView.animate(withDuration: 2, delay: 0, usingSpringWithDamping: 0.2, initialSpringVelocity: 1.0,
-                           options: .allowUserInteraction, animations: { [] in
-                            self.allButtons[i].transform = .identity
-            }, completion: nil)
-            buttonOneSuggestion = allButtons[i]
-            buttonTwoSuggestion = allButtons[allButtons.count-1]
-            
-        }
-        
-    }
-    
+
     func checkGrammar(color: UIColor) -> String {
         if allButtons.count < 2 { //not enough colors to change grammar
             return ""
         } else {
-            switch(level) {
-            case 1:
-                return levelOneGrammar(color: color)
-            case 2:
-                return levelTwoGrammar(color: color)
-            case 3:
-                return levelThreeGrammar(color: color)
-            default:
-                return ""
-            }
+            return levelGrammar(color: color)
         }
     }
     
-    func levelOneGrammar(color: UIColor) -> String {
-        let num = Int(widthConst/24) //make sure right num of emojis to fit phone size
-        var text = ""
-        var emoji = ""
-        if allButtons[0].backgroundColor == color &&
-            allButtons[1].backgroundColor == color { //three colors in a row
-            emoji = "🗡"
-        } else if color  == patternButtons[0].backgroundColor &&
-            allButtons[0].backgroundColor == patternButtons[1].backgroundColor &&
-            allButtons[1].backgroundColor == patternButtons[2].backgroundColor { //pattern
-            emoji = "💥"
-        } else if color == patternButtons[2].backgroundColor &&
-            allButtons[0].backgroundColor == patternButtons[1].backgroundColor &&
-            allButtons[1].backgroundColor == patternButtons[0].backgroundColor { // reverse pattern
-             //TODO TO OTHER
-        } else if allButtons.count < 3 { //check for last grammar - 4 tiles
-            return text
-        } else {
-            let tempColors = [color, allButtons[0].backgroundColor, allButtons[1].backgroundColor, allButtons[2].backgroundColor]
-            if tempColors[0] == tempColors[1] && tempColors[2] == tempColors[3] { //two doubles in a row
-                emoji = "💣"
-            }
-        }
-        if emoji.count > 0 {
-            for _ in 1...num {
-                text = text + emoji
-            }
-            return text
-        }
-        return text
-    }
-    
-    func levelTwoGrammar(color: UIColor) -> String {
+    func levelGrammar(color: UIColor) -> String {
         let num = Int(widthConst/24) //make sure right num of emojis to fit phone size
         var text = ""
         var emoji = ""
@@ -411,7 +194,7 @@ class MovesController: UIViewController {
             (color == patternButtons[3].backgroundColor &&
                 allButtons[0].backgroundColor == patternButtons[2].backgroundColor &&
                 allButtons[1].backgroundColor == patternButtons[1].backgroundColor) {
-            emoji = "⏸"
+            emoji = "⬆️"
         } else if allButtons.count < 3 { //check for last grammar - 4 tiles
             return text
         } else {
@@ -428,51 +211,7 @@ class MovesController: UIViewController {
         }
         return text
     }
-    
-    func levelThreeGrammar(color: UIColor) -> String {
-        let num = Int(widthConst/24) //make sure right num of emojis to fit phone size
-        var text = ""
-        var emoji = ""
-        if allButtons[0].backgroundColor == color &&    //three colors in a row
-            allButtons[1].backgroundColor == color {
-            emoji = "🗡"
-        } else if (color  == patternButtons[0].backgroundColor &&   //pattern
-            allButtons[0].backgroundColor == patternButtons[1].backgroundColor &&
-            allButtons[1].backgroundColor == patternButtons[2].backgroundColor) ||
-            (color  == patternButtons[1].backgroundColor &&
-                allButtons[0].backgroundColor == patternButtons[2].backgroundColor &&
-                allButtons[1].backgroundColor == patternButtons[3].backgroundColor) ||
-            (color  == patternButtons[2].backgroundColor &&
-                allButtons[0].backgroundColor == patternButtons[3].backgroundColor &&
-                allButtons[1].backgroundColor == patternButtons[4].backgroundColor) {
-            emoji = "💥"
-        } else if (color == patternButtons[2].backgroundColor &&    // reverse pattern
-            allButtons[0].backgroundColor == patternButtons[1].backgroundColor &&
-            allButtons[1].backgroundColor == patternButtons[0].backgroundColor) ||
-            (color == patternButtons[3].backgroundColor &&
-                allButtons[0].backgroundColor == patternButtons[2].backgroundColor &&
-                allButtons[1].backgroundColor == patternButtons[1].backgroundColor) ||
-            (color == patternButtons[4].backgroundColor &&
-                allButtons[0].backgroundColor == patternButtons[3].backgroundColor &&
-                allButtons[1].backgroundColor == patternButtons[2].backgroundColor) {
-            emoji = "⏸"
-        } else if allButtons.count < 3 { //check for last grammar - 4 tiles
-            return text
-        } else {
-            let tempColors = [color, allButtons[0].backgroundColor, allButtons[1].backgroundColor, allButtons[2].backgroundColor]
-            if tempColors[0] == tempColors[1] && tempColors[2] == tempColors[3] { //two doubles in a row
-                emoji = "💣"
-            }
-        }
-        if emoji.count > 0 {
-            for _ in 1...num {
-                text = text + emoji
-            }
-            return text
-        }
-        return text
-    }
-    
+   
     func moveButtonsDown() {
         let height = (screenHeight/20)
         for index in 0...allButtons.count-1 {
@@ -493,8 +232,8 @@ class MovesController: UIViewController {
     
     @IBAction func clickButton(sender: UIButton!) {
         if (sender.titleLabel?.text) != nil { //checking if pause button or bomb are clicked
-            if (sender.titleLabel!.text)![((sender.titleLabel!.text)!.startIndex)] == "⏸" { //pause for five seconds
-                pauseClicked(sender: sender)
+            if (sender.titleLabel!.text)![((sender.titleLabel!.text)!.startIndex)] == "⬆️" { //pause for five seconds
+                upClicked(sender: sender)
                 return
             } else if (sender.titleLabel!.text)![((sender.titleLabel!.text)!.startIndex)] == "💣" { //explode two tiles +-
                 bombClicked(sender: sender)
@@ -552,15 +291,20 @@ class MovesController: UIViewController {
         }
     }
     
-    func pauseClicked(sender: UIButton) {
-        inPause = true
-        UIButton.animate(withDuration: 0.75) { //eliminate pause tile
-            sender.backgroundColor = UIColor.black //switch colors
+    func upClicked(sender: UIButton) { //⬆️
+        UIButton.animate(withDuration: 0.75) { //eliminate up tile
+            sender.backgroundColor = UIColor.black //switch color
             sender.frame = CGRect(x: self.xConst + self.screenWidth, y: sender.frame.origin.y, width: self.widthConst, height: self.heightConst)
         }
         
         sender.removeFromSuperview()
         allButtons = allButtons.filter {$0 != sender}
+        if allButtons.count > 1 {
+            allButtons.remove(at: 0).removeFromSuperview()
+            allButtons.remove(at: 0).removeFromSuperview()
+        } else if allButtons.count == 1 {
+            allButtons.remove(at: 0).removeFromSuperview()
+        }
         moveButtonsDown()
         
         if isHighLighted { //unclick button
@@ -679,137 +423,50 @@ class MovesController: UIViewController {
     
     
     func generateRandomColor(_ level:Int) -> Int {
-        if level == 1 { //three colors
-            if allButtons.count > 9 { //check if at least there is one of each color half way down
-                var first = false
-                var second = false
-                var third = false
-                for (_, element) in allButtons.enumerated() {
-                    switch element.backgroundColor {
-                    case colorArray[0]?:
-                        first = true
-                        break
-                    case colorArray[1]?:
-                        second = true
-                        break
-                    case colorArray[2]?:
-                        third = true
-                        break
-                    default:
-                        break
-                    }
+        if allButtons.count > 8 { //check if at least there is one of each color half way - 1 tiles down
+            var first = false
+            var second = false
+            var third = false
+            var fourth = false
+            for (_, element) in allButtons.enumerated() {
+                switch element.backgroundColor {
+                case colorArray[0]?:
+                    first = true
+                    break
+                case colorArray[1]?:
+                    second = true
+                    break
+                case colorArray[2]?:
+                    third = true
+                    break
+                case colorArray[3]?:
+                    fourth = true
+                    break
+                default:
+                    break
                 }
-                //return color if havent shown up yet
-                if !first {
-                    return 0
-                } else if !second {
-                    return 1
-                } else if !third {
-                    return 2
-                } else {
-                    return Int(arc4random_uniform(UInt32(3)))
-                }
-            } else {
-                return Int(arc4random_uniform(UInt32(3)))
             }
-        } else if level == 2 { //four colors
-            if allButtons.count > 8 { //check if at least there is one of each color half way - 1 tiles down
-                var first = false
-                var second = false
-                var third = false
-                var fourth = false
-                for (_, element) in allButtons.enumerated() {
-                    switch element.backgroundColor {
-                    case colorArray[0]?:
-                        first = true
-                        break
-                    case colorArray[1]?:
-                        second = true
-                        break
-                    case colorArray[2]?:
-                        third = true
-                        break
-                    case colorArray[3]?:
-                        fourth = true
-                        break
-                    default:
-                        break
-                    }
-                }
-                //return color if havent shown up yet
-                if !first {
-                    return 0
-                } else if !second {
-                    return 1
-                } else if !third {
-                    return 2
-                } else if !fourth {
-                    return 3
-                } else {
-                    return Int(arc4random_uniform(UInt32(4)))
-                }
+            //return color if havent shown up yet
+            if !first {
+                return 0
+            } else if !second {
+                return 1
+            } else if !third {
+                return 2
+            } else if !fourth {
+                return 3
             } else {
                 return Int(arc4random_uniform(UInt32(4)))
             }
-        } else { //five colors
-            if allButtons.count > 7 { //check if at least there is one of each color half way - 2 tiles down
-                var first = false
-                var second = false
-                var third = false
-                var fourth = false
-                var fifth = false
-                for (_, element) in allButtons.enumerated() {
-                    switch element.backgroundColor {
-                    case colorArray[0]?:
-                        first = true
-                        break
-                    case colorArray[1]?:
-                        second = true
-                        break
-                    case colorArray[2]?:
-                        third = true
-                        break
-                    case colorArray[3]?:
-                        fourth = true
-                        break
-                    case colorArray[4]?:
-                        fifth = true
-                        break
-                    default:
-                        break
-                    }
-                }
-                //return color if havent shown up yet
-                if !first {
-                    return 0
-                } else if !second {
-                    return 1
-                } else if !third {
-                    return 2
-                } else if !fourth {
-                    return 3
-                } else if !fifth {
-                    return 4
-                } else {
-                    return Int(arc4random_uniform(UInt32(5)))
-                }
-            } else {
-                return Int(arc4random_uniform(UInt32(5)))
-            }
+        } else {
+            return Int(arc4random_uniform(UInt32(4)))
         }
+        
     }
     
-    func generateRandomPattern(_ level:Int) -> [UIColor] {
-        if level == 1 { //three colors, pattern of three
-            let pattern = [colorArray[0], colorArray[1], colorArray[2]]
-            return shuffleColor(array: pattern)
-        } else if level == 2 {//four colors, pattern of four
-            let pattern = [colorArray[0], colorArray[1], colorArray[2], colorArray[3]]
-            return shuffleColor(array: pattern)
-        } else { //five colors, pattern of five
-            let pattern = [colorArray[0], colorArray[1], colorArray[2], colorArray[3], colorArray[4]]
-            return shuffleColor(array: pattern)
-        }
+    func generateRandomPattern() -> [UIColor] {
+        let pattern = [colorArray[0], colorArray[1], colorArray[2], colorArray[3]]
+        return shuffleColor(array: pattern)
     }
     
     func shuffleColor(array: [UIColor]) -> [UIColor] {
@@ -826,52 +483,18 @@ class MovesController: UIViewController {
     }
     
     func checkPattern() {
-        switch level {
-        case 1:
-            if allButtons.count > 3 {
-                for index in 0...(allButtons.count-3) {
-                    if allButtons[index].backgroundColor == pattern1.backgroundColor {
-                        if allButtons[index+1].backgroundColor == pattern2.backgroundColor {
-                            if allButtons[index+2].backgroundColor == pattern3.backgroundColor {
+        if allButtons.count > 4 {
+            for index in 0...(allButtons.count-4) {
+                if allButtons[index].backgroundColor == pattern1.backgroundColor {
+                    if allButtons[index+1].backgroundColor == pattern2.backgroundColor {
+                        if allButtons[index+2].backgroundColor == pattern3.backgroundColor {
+                            if allButtons[index+3].backgroundColor == pattern4.backgroundColor {
                                 patternFound(index: index)
                             }
                         }
                     }
                 }
             }
-            break;
-        case 2:
-            if allButtons.count > 4 {
-                for index in 0...(allButtons.count-4) {
-                    if allButtons[index].backgroundColor == pattern1.backgroundColor {
-                        if allButtons[index+1].backgroundColor == pattern2.backgroundColor {
-                            if allButtons[index+2].backgroundColor == pattern3.backgroundColor {
-                                if allButtons[index+3].backgroundColor == pattern4.backgroundColor {
-                                    patternFound(index: index)
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            break;
-        default:
-            if allButtons.count > 5 {
-                for index in 0...(allButtons.count-5) {
-                    if allButtons[index].backgroundColor == pattern1.backgroundColor {
-                        if allButtons[index+1].backgroundColor == pattern2.backgroundColor {
-                            if allButtons[index+2].backgroundColor == pattern3.backgroundColor {
-                                if allButtons[index+3].backgroundColor == pattern4.backgroundColor {
-                                    if allButtons[index+4].backgroundColor == pattern5.backgroundColor {
-                                        patternFound(index: index)
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            break;
         }
     }
     
@@ -879,106 +502,38 @@ class MovesController: UIViewController {
         let newScore = Int(scoreText.text!)! + 1
         scoreText.text = String(newScore)
         patternFound = true
-        if level == 1 {
-            let temp1 = allButtons[index]
-            let temp2 = allButtons[index+1]
-            let temp3 = allButtons[index+2]
+        let temp1 = allButtons[index]
+        let temp2 = allButtons[index+1]
+        let temp3 = allButtons[index+2]
+        let temp4 = allButtons[index+3]
+        
+        temp1.backgroundColor = UIColor.black
+        temp2.backgroundColor = UIColor.black
+        temp3.backgroundColor = UIColor.black
+        temp4.backgroundColor = UIColor.black
+        
+        UIView.animate(withDuration: 0.75, animations:{
+            temp1.frame = CGRect(x: self.xConst + self.screenWidth, y: temp1.frame.origin.y, width: self.widthConst, height: self.heightConst)
+            temp2.frame = CGRect(x: self.xConst + self.screenWidth, y: temp2.frame.origin.y, width: self.widthConst, height: self.heightConst)
+            temp3.frame = CGRect(x: self.xConst + self.screenWidth, y: temp3.frame.origin.y, width: self.widthConst, height: self.heightConst)
+            temp4.frame = CGRect(x: self.xConst + self.screenWidth, y: temp4.frame.origin.y, width: self.widthConst, height: self.heightConst)
             
-            temp1.backgroundColor = UIColor.black
-            temp2.backgroundColor = UIColor.black
-            temp3.backgroundColor = UIColor.black
-            
-            UIView.animate(withDuration: 0.75, animations:{
-                temp1.frame = CGRect(x: self.xConst + self.screenWidth, y: temp1.frame.origin.y, width: self.widthConst, height: self.heightConst)
-                temp2.frame = CGRect(x: self.xConst + self.screenWidth, y: temp2.frame.origin.y, width: self.widthConst, height: self.heightConst)
-                temp3.frame = CGRect(x: self.xConst + self.screenWidth, y: temp3.frame.origin.y, width: self.widthConst, height: self.heightConst)
+            let when = DispatchTime.now() + 0.75
+            DispatchQueue.main.asyncAfter(deadline: when) {
+                temp1.removeFromSuperview()
+                temp2.removeFromSuperview()
+                temp3.removeFromSuperview()
+                temp4.removeFromSuperview()
                 
-                let when = DispatchTime.now() + 0.75
-                DispatchQueue.main.asyncAfter(deadline: when) {
-                    temp1.removeFromSuperview()
-                    temp2.removeFromSuperview()
-                    temp3.removeFromSuperview()
-                    
-                    self.allButtons = self.allButtons.filter {$0 != temp1}
-                    self.allButtons = self.allButtons.filter {$0 != temp2}
-                    self.allButtons = self.allButtons.filter {$0 != temp3}
-                    
-                    self.moveButtonsDown()
-                    self.patternFound = false
-                }
-            })
-        } else if level == 2 {
-            let temp1 = allButtons[index]
-            let temp2 = allButtons[index+1]
-            let temp3 = allButtons[index+2]
-            let temp4 = allButtons[index+3]
-            
-            temp1.backgroundColor = UIColor.black
-            temp2.backgroundColor = UIColor.black
-            temp3.backgroundColor = UIColor.black
-            temp4.backgroundColor = UIColor.black
-            
-            UIView.animate(withDuration: 0.75, animations:{
-                temp1.frame = CGRect(x: self.xConst + self.screenWidth, y: temp1.frame.origin.y, width: self.widthConst, height: self.heightConst)
-                temp2.frame = CGRect(x: self.xConst + self.screenWidth, y: temp2.frame.origin.y, width: self.widthConst, height: self.heightConst)
-                temp3.frame = CGRect(x: self.xConst + self.screenWidth, y: temp3.frame.origin.y, width: self.widthConst, height: self.heightConst)
-                temp4.frame = CGRect(x: self.xConst + self.screenWidth, y: temp4.frame.origin.y, width: self.widthConst, height: self.heightConst)
+                self.allButtons = self.allButtons.filter {$0 != temp1}
+                self.allButtons = self.allButtons.filter {$0 != temp2}
+                self.allButtons = self.allButtons.filter {$0 != temp3}
+                self.allButtons = self.allButtons.filter {$0 != temp4}
                 
-                let when = DispatchTime.now() + 0.75
-                DispatchQueue.main.asyncAfter(deadline: when) {
-                    temp1.removeFromSuperview()
-                    temp2.removeFromSuperview()
-                    temp3.removeFromSuperview()
-                    temp4.removeFromSuperview()
-                    
-                    self.allButtons = self.allButtons.filter {$0 != temp1}
-                    self.allButtons = self.allButtons.filter {$0 != temp2}
-                    self.allButtons = self.allButtons.filter {$0 != temp3}
-                    self.allButtons = self.allButtons.filter {$0 != temp4}
-                    
-                    self.moveButtonsDown()
-                    self.patternFound = false
-                }
-            })
-        } else {
-            let temp1 = allButtons[index]
-            let temp2 = allButtons[index+1]
-            let temp3 = allButtons[index+2]
-            let temp4 = allButtons[index+3]
-            let temp5 = allButtons[index+4]
-            
-            temp1.backgroundColor = UIColor.black
-            temp2.backgroundColor = UIColor.black
-            temp3.backgroundColor = UIColor.black
-            temp4.backgroundColor = UIColor.black
-            temp5.backgroundColor = UIColor.black
-            
-            UIView.animate(withDuration: 0.75, animations:{
-                temp1.frame = CGRect(x: self.xConst + self.screenWidth, y: temp1.frame.origin.y, width: self.widthConst, height: self.heightConst)
-                temp2.frame = CGRect(x: self.xConst + self.screenWidth, y: temp2.frame.origin.y, width: self.widthConst, height: self.heightConst)
-                temp3.frame = CGRect(x: self.xConst + self.screenWidth, y: temp3.frame.origin.y, width: self.widthConst, height: self.heightConst)
-                temp4.frame = CGRect(x: self.xConst + self.screenWidth, y: temp4.frame.origin.y, width: self.widthConst, height: self.heightConst)
-                temp5.frame = CGRect(x: self.xConst + self.screenWidth, y: temp5.frame.origin.y, width: self.widthConst, height: self.heightConst)
-                
-                let when = DispatchTime.now() + 0.75
-                DispatchQueue.main.asyncAfter(deadline: when) {
-                    temp1.removeFromSuperview()
-                    temp2.removeFromSuperview()
-                    temp3.removeFromSuperview()
-                    temp4.removeFromSuperview()
-                    temp5.removeFromSuperview()
-                    
-                    self.allButtons = self.allButtons.filter {$0 != temp1}
-                    self.allButtons = self.allButtons.filter {$0 != temp2}
-                    self.allButtons = self.allButtons.filter {$0 != temp3}
-                    self.allButtons = self.allButtons.filter {$0 != temp4}
-                    self.allButtons = self.allButtons.filter {$0 != temp5}
-                    
-                    self.moveButtonsDown()
-                    self.patternFound = false
-                }
-            })
-        }
+                self.moveButtonsDown()
+                self.patternFound = false
+            }
+        })
     }
     
     func gameOver() { //tiles have reached bottom of screen
@@ -995,27 +550,9 @@ class MovesController: UIViewController {
         }
         
         if Int(highScoreText.text!)! < Int(scoreText.text!)! {
-            switch level {
-            case 1:
-                highScoreText.text = scoreText.text
-                userDefults.set(highScoreText.text, forKey: "highScoreEasy")
-                gameOverMessage.isHidden = false
-                break
-            case 2:
-                highScoreText.text = scoreText.text
-                userDefults.set(highScoreText.text, forKey: "highScoreMedium")
-                gameOverMessage.isHidden = false
-                break
-            case 3:
-                highScoreText.text = scoreText.text
-                userDefults.set(highScoreText.text, forKey: "highScoreHard")
-                gameOverMessage.isHidden = false
-                break
-            default:
-                highScoreText.text = scoreText.text
-                userDefults.set(highScoreText.text, forKey: "highScoreEasy")
-                gameOverMessage.isHidden = false
-            }
+            highScoreText.text = scoreText.text
+            userDefults.set(highScoreText.text, forKey: "highScoreMoves")
+            gameOverMessage.isHidden = false
         }
     }
     
@@ -1034,11 +571,6 @@ class MovesController: UIViewController {
         addStartBlocks()
         
         updatePattern()
-    }
-    
-    @IBAction func backToLevels() {
-        let viewController = storyboard?.instantiateViewController(withIdentifier: "MovesLevelController") as! MovesLevelController
-        self.present(viewController, animated:false, completion:nil)
     }
     
     @IBAction func pauseGame() {
