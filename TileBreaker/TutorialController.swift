@@ -17,6 +17,6 @@ class TutorialController: UIViewController {
         super.viewDidLoad()
 
         scrollView.isScrollEnabled = true
-        scrollView.contentSize.height = UIScreen.main.bounds.height
+        scrollView.contentSize.height = stackView.frame.height //UIScreen.main.bounds.height
     }
 }
