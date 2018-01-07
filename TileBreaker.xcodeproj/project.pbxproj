@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3319CC922002B1D0003578C2 /* TutorialPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3319CC912002B1D0003578C2 /* TutorialPageViewController.swift */; };
 		33329DD61FB0C335002004D4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33329DD51FB0C335002004D4 /* AppDelegate.swift */; };
 		33329DD81FB0C335002004D4 /* TimedController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33329DD71FB0C335002004D4 /* TimedController.swift */; };
 		33329DDB1FB0C335002004D4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 33329DD91FB0C335002004D4 /* Main.storyboard */; };
@@ -19,6 +20,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3319CC912002B1D0003578C2 /* TutorialPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialPageViewController.swift; sourceTree = "<group>"; };
 		33329DD21FB0C335002004D4 /* TileBreaker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TileBreaker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		33329DD51FB0C335002004D4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		33329DD71FB0C335002004D4 /* TimedController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimedController.swift; sourceTree = "<group>"; };
@@ -72,6 +74,7 @@
 				33EBE4E81FF1F9A2001D18AD /* MovesController.swift */,
 				33EBE4EC1FF20E34001D18AD /* MainController.swift */,
 				33CBB1A31FFC5FAC00D53ECA /* TutorialController.swift */,
+				3319CC912002B1D0003578C2 /* TutorialPageViewController.swift */,
 			);
 			path = TileBreaker;
 			sourceTree = "<group>";
@@ -150,6 +153,7 @@
 			files = (
 				33BA0AA61FDC797E00786021 /* TimedLevelController.swift in Sources */,
 				33329DD81FB0C335002004D4 /* TimedController.swift in Sources */,
+				3319CC922002B1D0003578C2 /* TutorialPageViewController.swift in Sources */,
 				33EBE4E91FF1F9A2001D18AD /* MovesController.swift in Sources */,
 				33329DD61FB0C335002004D4 /* AppDelegate.swift in Sources */,
 				33EBE4ED1FF20E34001D18AD /* MainController.swift in Sources */,

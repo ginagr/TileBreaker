@@ -9,14 +9,5 @@
 import UIKit
 
 class TutorialController: UIViewController {
-
-    @IBOutlet weak var scrollView: UIScrollView!
-    @IBOutlet weak var stackView: UIStackView!
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        scrollView.isScrollEnabled = true
-        scrollView.contentSize.height = stackView.frame.height //UIScreen.main.bounds.height
-    }
 }
