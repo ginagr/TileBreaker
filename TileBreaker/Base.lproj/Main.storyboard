@@ -739,9 +739,10 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c9Q-hB-8gL">
-                                <rect key="frame" x="236" y="93" width="128" height="192"/>
+                                <rect key="frame" x="238" y="93" width="126" height="192"/>
                                 <accessibility key="accessibilityConfiguration" identifier="levelOneLabel"/>
                                 <constraints>
+                                    <constraint firstAttribute="width" constant="126" id="1kj-vh-VjF"/>
                                     <constraint firstAttribute="height" constant="192" id="5U1-Ri-8YI"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -841,7 +842,6 @@
                             <constraint firstItem="Vod-7u-t1C" firstAttribute="top" secondItem="90Y-XA-vIy" secondAttribute="bottom" constant="2" id="Iok-kB-gcG"/>
                             <constraint firstItem="Rwm-5h-Qss" firstAttribute="trailing" secondItem="90Y-XA-vIy" secondAttribute="trailing" constant="11" id="M5g-zk-X87"/>
                             <constraint firstItem="G46-ma-wuf" firstAttribute="top" secondItem="4oA-Ii-wg6" secondAttribute="bottom" constant="6" id="MOX-QZ-I3C"/>
-                            <constraint firstItem="c9Q-hB-8gL" firstAttribute="leading" secondItem="Rwm-5h-Qss" secondAttribute="leading" constant="236" id="Nd8-jv-75h"/>
                             <constraint firstItem="Vod-7u-t1C" firstAttribute="leading" secondItem="fyi-KL-QIx" secondAttribute="trailing" constant="1" id="PHC-8P-KVY"/>
                             <constraint firstItem="W7v-2Z-NOY" firstAttribute="leading" secondItem="Rwm-5h-Qss" secondAttribute="leading" constant="60" id="R8X-RB-zqW"/>
                             <constraint firstItem="Rwm-5h-Qss" firstAttribute="bottom" secondItem="xMx-Tr-6F5" secondAttribute="bottom" constant="20" id="TRH-F8-Z0o"/>
@@ -898,7 +898,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="pOA-MA-S5o"/>
+        <segue reference="Nrh-aN-uAg"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="1" green="0.12373037336291415" blue="0.084641289868127689" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
 </document>
