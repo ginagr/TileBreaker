@@ -249,6 +249,11 @@ class MovesController: UIViewController {
             
             firstColor = sender.backgroundColor; //save color
             firstButton = sender; //save button
+        } else if firstButton == sender { //clicked on same button, so unclick
+            isHighLighted = false
+            UIButton.animate(withDuration: 0.05) { //move button to right to show clicked
+                sender.frame = CGRect(x: self.xConst, y: sender.frame.origin.y, width: self.widthConst, height: self.heightConst)
+            }
         } else {
             handleSwitch(sender: sender)
             addLevelBlocks()

@@ -41,6 +41,7 @@ class TimedController: UIViewController {
     
     var patternFound:Bool = false
     var inPause = false
+    var doublePause = 0
     var moving = false
     var pausingGame = false
     
@@ -484,9 +485,9 @@ class TimedController: UIViewController {
             UIView.animate(withDuration: 0.1, animations:{
                 self.allButtons[index].frame = CGRect(x: x, y: y, width: self.widthConst, height: self.heightConst)
             })
-//            UIView.animate(withDuration: (speed+0.1), animations:{
-//                self.allButtons[index].frame = CGRect(x: x, y: y, width: self.widthConst, height: self.heightConst)
-//            })
+            //            UIView.animate(withDuration: (speed+0.1), animations:{
+            //                self.allButtons[index].frame = CGRect(x: x, y: y, width: self.widthConst, height: self.heightConst)
+            //            })
         }
         if (allButtons[allButtons.count-1].frame.origin.y) > (screenHeight - height - 1) {
             gameOver()
@@ -558,6 +559,9 @@ class TimedController: UIViewController {
     }
     
     func pauseClicked(sender: UIButton) {
+        if inPause == true {
+            doublePause = doublePause + 1
+        }
         inPause = true
         UIButton.animate(withDuration: 0.75) { //eliminate pause tile
             sender.backgroundColor = UIColor.black //switch colors
@@ -574,11 +578,24 @@ class TimedController: UIViewController {
             }
             isHighLighted = false
         }
-        gameTimer.invalidate() //stop timer
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(5), execute: { //pausing timer
+        if doublePause == 0 {
+            gameTimer.invalidate() //stop timer
+            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(5), execute: { //pausing timer
+                self.checkPauses()
+            })
+        }
+    }
+    
+    func checkPauses() {
+        if doublePause == 0 {
             self.gameTimer = Timer.scheduledTimer(timeInterval: self.speed, target: self, selector: #selector(self.addBlock), userInfo: nil, repeats: true)
             self.inPause = false
-        })
+        } else {
+            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(5), execute: { //for more than one pause clicked
+                self.doublePause = self.doublePause - 1
+                self.checkPauses()
+            })
+        }
     }
     
     func handleSwitch(sender: UIButton!) {
